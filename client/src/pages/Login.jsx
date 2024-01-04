@@ -1,16 +1,21 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setUser, setToken, clearUser } from "../context/user/userSlice";
 
 function Login() {
   const [form, setForm] = useState({});
-  console.log(form.email, "pass : ", form.password);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user, token } = useSelector((state) => state.user);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  console.log(form);
+  // console.log(form);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,10 +26,21 @@ function Login() {
         password: form.password,
       });
 
-      console.log(loginResult.data);
+      dispatch(setUser(loginResult.data.user));
+      dispatch(setToken(loginResult.data.token));
+      localStorage.setItem("token", loginResult.data.token);
+      localStorage.setItem("user", JSON.stringify(loginResult.data.user))
+      navigate("/");
+
+      console.log(loginResult.data.token);
+      console.log(loginResult.data.user);
     } catch (err) {
-      console.log(err.reponse.data.msg);
+      console.log(err.response.data.msg);
     }
+  };
+
+  const handleLogOut = () => {
+    dispatch(clearUser());
   };
 
   return (

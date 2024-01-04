@@ -88,6 +88,16 @@ module.exports = {
             console.log(err.message);
             return res.status(500).send({msg: err.message});
         }
-    }
+    },
+    // Function to Get The Number of Books
+    numberOfAllBook: async(req, res) => {
+        try{
+            const books = await Book.find({});
+            return res.status(200).json({count: (books).length});
+        }catch (err){
+            console.log(err);
+            res.status(500).send({msg: err.message});
+        }
+    },
 
 }

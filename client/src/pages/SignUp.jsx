@@ -1,34 +1,51 @@
 import React, { useState, useTransition } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setUser, setToken, clearUser } from "../context/user/userSlice";
+// import "./CustomSytle.css";
+import "./custom.css"
 
 function SignUp() {
   const [form, setForm] = useState({});
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {user, token} = useSelector((state) => state.user);
   
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-  console.log(form);
+  // console.log(form);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
    
 
     try {
-      //   const createResult = await axios.post(
-      //     "http://localhost:3000/user/",
-      //     form
-      //   );
-      const loginResult = await axios.post("http://localhost:3000/user/login", {
-        email: form.email,
-        password: form.password,
-      });
-      //   console.log("created one", createResult);
-      console.log(form.email, "pass : ", form.password);
-      console.log("login result", loginResult);
+        const createResult = await axios.post(
+          "http://localhost:3000/user/",
+          form
+        );
+
+        console.log(createResult);
+
+        const loginResult = await axios.post("http://localhost:3000/user/login", {
+          email: form.email,
+          password: form.password,
+        });
+  
+        dispatch(setUser(loginResult.data.user));
+        dispatch(setToken(loginResult.data.token));
+        localStorage.setItem("token", loginResult.data.token);
+        localStorage.setItem("user", JSON.stringify(loginResult.data.user))
+        navigate("/")
+        
+        console.log(loginResult.data.token);
+        console.log(loginResult.data.user);
+
     } catch (err) {
-      console.log(err.response);
+      console.log(err.response.data.msg);
     }
   };
 
@@ -60,7 +77,7 @@ function SignUp() {
               />
               <input
                 onChange={handleChange}
-                className=" py-2 pl-1 outline-0"
+                className=" py-2 pl-1 outline-0 no__outline"
                 type="text"
                 name="lastName"
                 placeholder="Last Name"

@@ -113,14 +113,24 @@ module.exports = {
                 const lateFee = timeDifferenceInDays * 2; 
                 const totalFee = fee + lateFee;
 
-                return res.status(200).json({msg : "Transaction deleted", fee , lateFee, totalFee})
+                return res.status(200).json({msg : "Transaction deleted", fee , lateFee, totalFee});
             } else{
                 const fee = book.rentalFee;
-                return res.status(200).json({msg : "Transaction deleted", data : "Fee", fee})
+                return res.status(200).json({msg : "Transaction deleted", data : fee});
             }
         } catch (err) {
             console.log(err.message);
             res.status(500).json({msg : err.message});
         }
-    }
+    },
+    numberOfAllTransaction : async (req, res) => {
+        try{
+            const transactions = await Transaction.find({});
+            return res.status(200).json({count : transactions.length});
+
+        }catch (err){
+            console.log(err.message);
+            res.status(500).send({msg : err.message});
+        }
+    },
 }

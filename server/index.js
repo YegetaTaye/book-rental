@@ -7,6 +7,7 @@ const connectDatabase = require('./config/database');
 const bookRouter = require("./controllers/book/bookRoute");
 const userRouter = require("./controllers/user/userRoute");
 const transactionRoute = require("./controllers/transaction/transactionRoute");
+const orderRoute = require("./controllers/order/orderRoute");
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
@@ -23,6 +24,7 @@ app.use(express.urlencoded({extended: true}));
 // Routes
 app.use("/book", bookRouter);
 app.use("/user", userRouter);
+app.use("/order", orderRoute);
 app.use("/transaction", transactionRoute);
 
 
