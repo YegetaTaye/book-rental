@@ -11,8 +11,8 @@ import axios from "axios";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Header from "./components/Header";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
+import Login from "./pages/auth/Login";
+import SignUp from "./pages/auth/Signup";
 import { setUser, setToken, clearUser } from "./context/user/userSlice";
 import Banner from "./components/Banner/Banner";
 import Navbar from "./components/Navbar/Navbar";
@@ -73,35 +73,41 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      {/* <Header /> */}
-      <Navbar handleOrderPopup={handleOrderPopup} />
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route
-          path="/"
-          element={
-            <>
-              {" "}
-              <Hero /> <Services handleOrderPopup={handleOrderPopup} />{" "}
-              <Banner /> <AppStore /> <Books /> <Testimonial />{" "}
-              <OrderPopup
-                orderPopup={orderPopup}
-                setOrderPopup={setOrderPopup}
-              />
-            </>
-          }
-        />
-        <Route path="/admin/dashboard" element={<DashboardLayout />}>
-          <Route path="" element={<Dashboard />} />
-          <Route path="upload" element={<UploadBook />} />
-          <Route path="manage" element={<ManageBook />} />
-          <Route path="users" element={<UsersList />} />
-          <Route path="order" element={<Order />} />
-        </Route>
-      </Routes>
-    </Router>
+    <>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+        {/* <Header /> */}
+        <Routes>
+          <Route pa></Route>
+
+          <Route
+            path="/"
+            element={
+              <>
+                {" "}
+                <Navbar handleOrderPopup={handleOrderPopup} />
+                <Hero /> <Services handleOrderPopup={handleOrderPopup} />{" "}
+                <Books /> <Testimonial />{" "}
+                <OrderPopup
+                  orderPopup={orderPopup}
+                  setOrderPopup={setOrderPopup}
+                />
+              </>
+            }
+          />
+          <Route path="/admin/dashboard" element={<DashboardLayout />}>
+            <Route path="" element={<Dashboard />} />
+            <Route path="upload" element={<UploadBook />} />
+            <Route path="manage" element={<ManageBook />} />
+            <Route path="users" element={<UsersList />} />
+            <Route path="order" element={<Order />} />
+          </Route>
+        </Routes>
+      </Router>
+    </>
   );
 }
 

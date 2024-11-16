@@ -36,7 +36,7 @@ const DropdownLinks = [
 const Navbar = ({ handleOrderPopup }) => {
   return (
     <>
-      <div className="shadow-md bg-white dark:bg-gray-900 dark:text-white duration-200">
+      <div className="shadow-md bg-white dark:bg-gray-900 dark:text-white duration-200 px-6">
         <div className="container py-3 sm:py-0">
           <div className="flex justify-between items-center">
             <div>

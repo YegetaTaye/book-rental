@@ -70,14 +70,14 @@ const Services = ({ handleOrderPopup }) => {
   return (
     <>
       <span id="services"></span>
-      <div className="py-10 bg-white dark:bg-gray-900 dark:text-white duration-200">
+      <div className="py-10 px-10  border-r-gray-50 dark:bg-gray-900 dark:text-white duration-200">
         <div className="container">
           <div className="text-center mb-20 max-w-[400px] mx-auto">
-            <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary ">
+            <p className="text bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary ">
               Trending Books
             </p>
-            <h1 className="text-3xl font-bold">Best Books</h1>
-            <p className="text-xs text-gray-400">
+            <h1 className="text-3xl font-bold py-2">Best Books</h1>
+            <p className="text text-gray-400">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit.
               Perspiciatis delectus architecto error nesciunt,
             </p>
@@ -87,7 +87,7 @@ const Services = ({ handleOrderPopup }) => {
               <div
                 key={service.id}
                 data-aos="zoom-in"
-                className="rounded-2xl bg-white dark:bg-gray-800 hover:bg-primary dark:hover:bg-primary hover:text-white relative shadow-xl duration-high group max-w-[300px] mt-16 mb-0"
+                className=" rounded-2xl bg-white dark:bg-gray-800 hover:bg-primary dark:hover:bg-primary hover:text-white relative shadow-xl duration-high group max-w-[300px] mt-16 mb-16"
               >
                 <div className="h-[100px]">
                   <img

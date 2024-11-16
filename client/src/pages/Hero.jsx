@@ -4,6 +4,7 @@ import Book1 from "../assets/books/book2.jpg";
 import Book2 from "../assets/books/book1.jpg";
 import Book3 from "../assets/books/book3.jpg";
 import Vector from "../assets/images/blue-pattern.png";
+import { Button } from "@/components/ui/button"
 
 
 const ImageList = [
@@ -47,9 +48,9 @@ const Hero = ({ handleOrderPopup }) => {
   };
 
   return (
-    <>
+    <div >
       <div
-        className="min-h-[550px] sm:min-h-[650px] bg-gray-100 flex justify-center items-center dark:bg-gray-950 dark:text-white duration-200"
+        className="px-20 h-screen min-h-[550px] sm:min-h-[650px] bg-gray-100 flex justify-center items-center dark:bg-gray-950 dark:text-white duration-200"
         style={bgImage}
       >
         <div className="container pb-8 sm:pb-0">
@@ -66,25 +67,28 @@ const Hero = ({ handleOrderPopup }) => {
                 className="text-5xl sm:text-6xl lg:text-7xl font-bold"
               >
                 {title}
-                <p class="bg-clip-text text-transparent bg-gradient-to-b from-primary text-right text-sm to-secondary">
-                  by Anonymous
-                </p>{" "}
+                
               </h1>
               <p
                 data-aos="slide-up"
                 data-aos-duration="500"
                 data-aos-delay="100"
-                className="text-sm "
+                className="text-xl font-medium my-4"
               >
                 {description}
               </p>
-              <div>
-                <button
+              <p class="bg-clip-text bg-gradient-to-b text-sm ">
+                  by Anonymous
+                </p>{" "}
+              <div className="py-4">
+                <Button
                   onClick={handleOrderPopup}
-                  className="bg-gradient-to-r from-primary to-secondary hover:scale-105 duration-200 text-white py-2 px-4 rounded-full"
+                  variant="outlined"
+                  className="text-white"
+                  // className="bg-gradient-to-r from-primary to-secondary hover:scale-105 duration-200 text-white py-2 px-4 rounded-full"
                 >
                   Order Now
-                </button>
+                </Button>
               </div>
             </div>
             {/* Image section */}
@@ -120,7 +124,7 @@ const Hero = ({ handleOrderPopup }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

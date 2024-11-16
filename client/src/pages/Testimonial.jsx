@@ -27,7 +27,7 @@ const Testimonial = () => {
     dots: true,
     arrows: false,
     infinite: true,
-    speed: 500,
+    speed: 1000,
     // slidesToShow: 2,
     slidesToScroll: 1,
     autoplay: true,
@@ -63,14 +63,11 @@ const Testimonial = () => {
   };
   return (
     <>
-      <div data-aos="fade-up" data-aos-duration="300" className="py-10 bg-white dark:bg-gray-900 dark:text-white duration-200">
+      <div data-aos="fade-up" data-aos-duration="300" className="py-20 bg-white dark:bg-gray-900 dark:text-white duration-200">
         <div className="w-full">
           <div className="text-center mb-20 max-w-[600px] mx-auto">
-            <p className="text-sm bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-              What our customers say
-            </p>
             <h1 className="text-3xl font-bold">Testimonial</h1>
-            <p className="text-xs text-gray-400">
+            <p className="text text-gray-400 text-center">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit.
               Perspiciatis delectus architecto error nesciunt,
             </p>
@@ -78,7 +75,7 @@ const Testimonial = () => {
           <div
             data-aos="zoom-in"
             data-aos-duration="300"
-            className="grid grid-cols-1  mx-12 gap-8"
+            className="grid grid-cols-1  mx-12 gap-2"
           >
             <Slider {...settings}>
               {testimonialData.map((data) => {
@@ -86,7 +83,7 @@ const Testimonial = () => {
                   <div className="my-6">
                     <div
                       key={data.id}
-                      className=" flex flex-col gap-4 shadow-lg py-8 px-6 mx-4 rounded-xl dark:bg-gray-800 bg-primary/10 relative"
+                      className=" flex flex-col gap-2 shadow-lg py-8 px-8 mx-20 rounded-xl dark:bg-gray-800 bg-primary/10 relative"
                     >
                       <div>
                         <img
@@ -104,7 +101,7 @@ const Testimonial = () => {
                         </div>
                       </div>
 
-                      <p className="text-black/20 text-9xl font-serif absolute top-0 right-0">
+                      <p className="text-black/20 text-7xl font-serif absolute top-0 right-0 pr-4">
                         ,,
                       </p>
                     </div>
