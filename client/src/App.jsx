@@ -29,7 +29,7 @@ import UsersList from "./dashboard/UsersList";
 import Order from "./dashboard/order";
 import Dashboard from "./dashboard/dashboard";
 import DashboardLayout from "./app/dashboard/DashboardLayout";
-import Analytics from "./app/dashboard/page";
+import Analytics from "./app/dashboard/Analytics";
 import NotFound from "./not-found";
 
 function App() {
