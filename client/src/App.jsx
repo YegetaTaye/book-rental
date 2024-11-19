@@ -22,12 +22,15 @@ import Books from "./pages/Books";
 import AppStore from "./pages/AppStore";
 import Testimonial from "./pages/Testimonial";
 import OrderPopup from "./components/OrderPopup";
-import DashboardLayout from "./pages/dashboard/DashboardLayout";
-import UploadBook from "./pages/dashboard/UploadBook";
-import ManageBook from "./pages/dashboard/ManageBook";
-import UsersList from "./pages/dashboard/UsersList";
-import Order from "./pages/dashboard/order";
-import Dashboard from "./pages/dashboard/dashboard";
+// import DashboardLayout from "./dashboard/DashboardLayout";
+import UploadBook from "./dashboard/UploadBook";
+import ManageBook from "./dashboard/ManageBook";
+import UsersList from "./dashboard/UsersList";
+import Order from "./dashboard/order";
+import Dashboard from "./dashboard/dashboard";
+import DashboardLayout from "./app/dashboard/DashboardLayout";
+import Analytics from "./app/dashboard/page";
+import NotFound from "./not-found";
 
 function App() {
   const { user, token } = useSelector((state) => state.user);
@@ -98,12 +101,27 @@ function App() {
               </>
             }
           />
-          <Route path="/admin/dashboard" element={<DashboardLayout />}>
+          {/* <Route path="/admin/dashboard" element={<DashboardLayout />}>
             <Route path="" element={<Dashboard />} />
             <Route path="upload" element={<UploadBook />} />
             <Route path="manage" element={<ManageBook />} />
             <Route path="users" element={<UsersList />} />
             <Route path="order" element={<Order />} />
+          </Route> */}
+
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route path="" element={<Analytics />} />
+            <Route path="orders" element={<Order />} />
+            <Route path="transactions" element={<Order />} />
+            <Route path="upload" element={<UploadBook />} />
+            <Route path="books" element={<ManageBook />} />
+            <Route path="books/new" element={<ManageBook />} />
+            <Route path="users" element={<UsersList />} />
+            <Route path="admins" element={<UsersList />} />
+          </Route>
+
+          <Route>
+            <Route path="/*" element={<NotFound />} />
           </Route>
         </Routes>
       </Router>
