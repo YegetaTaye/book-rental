@@ -1,5 +1,6 @@
 const express = require("express");
 const Book = require("../models/book.model");
+const bookSchema = require("../validations/book.validation");
 
 module.exports = {
   // Function to save a new Book
@@ -13,20 +14,11 @@ module.exports = {
         availableCopies,
         rentalFee,
       } = req.body;
-      // console.log(title, author, publicationYear, totalCopies, availableCopies, rentalFee)
 
-      if (
-        !title ||
-        !author ||
-        !publicationYear ||
-        !totalCopies ||
-        !availableCopies ||
-        !rentalFee
-      )
-        return res
-          .status(400)
-          .json({ msg: "Not all fields have been provided" });
-      //     //the JSON payload is the data that is sent as the body of the HTTP response
+      if (availableCopies > totalCopies)
+        return res.status(404).json({
+          msg: "Available copies can't be greater than total copies.",
+        });
 
       const newBook = {
         title: title,

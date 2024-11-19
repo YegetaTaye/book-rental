@@ -1,4 +1,6 @@
 const router = require("express").Router();
+const { validate } = require("../middleware/validate");
+const { orderSchema } = require("../validations/order.validations");
 
 const {
   addOrder,
@@ -9,7 +11,7 @@ const {
   numberOfAllOrders,
 } = require("../controllers");
 
-router.post("/", addOrder);
+router.post("/", validate(orderSchema), addOrder);
 router.get("/", getAllOrders);
 router.get("/count", numberOfAllOrders);
 router.get("/:id", getOrderById);

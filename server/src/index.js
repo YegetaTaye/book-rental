@@ -22,10 +22,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use("/book", bookRouter);
-app.use("/user", userRouter);
-app.use("/order", orderRouter);
-app.use("/transaction", transactionRouter);
+app.use("/books", bookRouter);
+app.use("/users", userRouter);
+app.use("/orders", orderRouter);
+app.use("/transactions", transactionRouter);
 
 // Start the server
 connectDatabase();

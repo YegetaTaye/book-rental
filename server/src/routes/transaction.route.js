@@ -1,4 +1,6 @@
 const router = require("express").Router();
+const { validate } = require("../middleware/validate");
+const { transactionSchema } = require("../validations/transaction.validation");
 
 const {
   addTranscation,
@@ -10,7 +12,7 @@ const {
   numberOfAllBook,
 } = require("../controllers");
 
-router.post("/", addTranscation);
+router.post("/", validate(transactionSchema), addTranscation);
 router.get("/", getAllTransaction);
 router.get("/count", numberOfAllTransaction);
 router.get("/byUser/:id", getTransactionByUserId);

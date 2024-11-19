@@ -1,4 +1,6 @@
 const router = require("express").Router();
+const { validate } = require("../middleware/validate");
+const { userSchema, loginSchema } = require("../validations/user.validations");
 
 const {
   addUser,
@@ -11,7 +13,8 @@ const {
 
 const auth = require("../middleware/auth");
 
-router.post("/", addUser);
+router.post("/", validate(userSchema), addUser);
+router.post("/login", validate(loginSchema), login);
 router.get("/", getAllUsers);
 router.get("/count", numberOfAllUsers);
 router.get("/:id", getUserById);
