@@ -3,7 +3,6 @@ import Book1 from "../assets/books/book1.jpg";
 import Book2 from "../assets/books/book2.jpg";
 import Book3 from "../assets/books/book3.jpg";
 
-
 const booksData = [
   {
     id: 1,
@@ -40,7 +39,7 @@ const booksData = [
   },
 ];
 
-const Books = () => {
+const TopBooks = () => {
   return (
     <>
       <div className="pt-14 pb-12 bg-white dark:bg-gray-900 dark:text-white duration-200">
@@ -71,8 +70,7 @@ const Books = () => {
                   <div>
                     <h3 className="font-semibold">{title}</h3>
                     <p className="text-sm text-gray-700">{author}</p>
-                    <div className="flex items-center gap-1">
-                    </div>
+                    <div className="flex items-center gap-1"></div>
                   </div>
                 </div>
               ))}
@@ -89,4 +87,4 @@ const Books = () => {
   );
 };
 
-export default Books;
+export default TopBooks;

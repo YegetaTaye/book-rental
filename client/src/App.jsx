@@ -18,19 +18,22 @@ import Banner from "./components/Banner/Banner";
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./pages/Hero";
 import Services from "./pages/Services";
-import Books from "./pages/Books";
+import TopBooks from "./pages/Books";
 import AppStore from "./pages/AppStore";
 import Testimonial from "./pages/Testimonial";
 import OrderPopup from "./components/OrderPopup";
 // import DashboardLayout from "./dashboard/DashboardLayout";
-import UploadBook from "./dashboard/UploadBook";
-import ManageBook from "./dashboard/ManageBook";
-import UsersList from "./dashboard/UsersList";
-import Order from "./dashboard/order";
-import Dashboard from "./dashboard/dashboard";
-import DashboardLayout from "./app/dashboard/DashboardLayout";
-import Analytics from "./app/dashboard/Analytics";
+import UploadBook from "./dashboard/books/new";
+import Books from "./dashboard/books/list";
+import UsersList from "./dashboard/users/usersList";
+import AdminsList from "./dashboard/users/adminsList";
+import Order from "./dashboard/orders/list";
+import Transactions from "./dashboard/transactions/list";
+// import Dashboard from "./dashboard/dashboard";
+import DashboardLayout from "./dashboard/DashboardLayout";
+import Analytics from "./dashboard/Analytics";
 import NotFound from "./not-found";
+import TestPage from "./dashboard/TestPage";
 
 function App() {
   const { user, token } = useSelector((state) => state.user);
@@ -79,6 +82,7 @@ function App() {
     <>
       <Router>
         <Routes>
+          <Route path="/test" element={<TestPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>
@@ -93,7 +97,7 @@ function App() {
                 {" "}
                 <Navbar handleOrderPopup={handleOrderPopup} />
                 <Hero /> <Services handleOrderPopup={handleOrderPopup} />{" "}
-                <Books /> <Testimonial />{" "}
+                <TopBooks /> <Testimonial />{" "}
                 <OrderPopup
                   orderPopup={orderPopup}
                   setOrderPopup={setOrderPopup}
@@ -112,12 +116,12 @@ function App() {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route path="" element={<Analytics />} />
             <Route path="orders" element={<Order />} />
-            <Route path="transactions" element={<Order />} />
+            <Route path="transactions" element={<Transactions />} />
             <Route path="upload" element={<UploadBook />} />
-            <Route path="books" element={<ManageBook />} />
-            <Route path="books/new" element={<ManageBook />} />
+            <Route path="books" element={<Books />} />
+            <Route path="books/new" element={<Books />} />
             <Route path="users" element={<UsersList />} />
-            <Route path="admins" element={<UsersList />} />
+            <Route path="admins" element={<AdminsList />} />
           </Route>
 
           <Route>
