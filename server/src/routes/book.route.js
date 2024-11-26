@@ -15,7 +15,7 @@ router.post("/", validate(bookSchema), addBook);
 router.get("/", getAllBook);
 router.get("/count", numberOfAllBook);
 router.get("/:id", getBookById);
-router.put("/:id", updateBook);
+router.put("/:id", validate(bookSchema), updateBook);
 router.delete("/:id", deleteBook);
 
 const bookRouter = router;

@@ -35,7 +35,7 @@ const data = {
   },
   navMain: [
     {
-      title: "Home",
+      title: "Analytics",
       url: "/dashboard",
       icon: SquareTerminal,
       isActive: true,

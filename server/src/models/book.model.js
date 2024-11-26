@@ -9,6 +9,11 @@ const BookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  bookCode: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   publicationYear: Number,
   totalCopies: {
     type: Number,

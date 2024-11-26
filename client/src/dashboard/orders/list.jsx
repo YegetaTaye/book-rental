@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import UserDataTable from "@/dashboard/components/DataTable";
-import { data, columns } from "@/dashboard/users/userTableConfig";
+import { orders, columns } from "@/dashboard/orders/OrderTableConfig";
 
 export default function Order() {
-  const [orders, setOrders] = useState([]);
+  // const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
   const [books, setBooks] = useState([]);
 
@@ -12,7 +12,7 @@ export default function Order() {
     const fetchOrder = async () => {
       try {
         const orderData = await axios.get("http://localhost:3000/order");
-        setOrders(orderData.data.data);
+        // setOrders(orderData.data.data);
       } catch (err) {
         console.log(err.message);
       }
@@ -44,7 +44,7 @@ export default function Order() {
   return (
     <div className="container mx-auto py-10">
       <h1 className="text-2xl font-bold mb-5">Orders Data Table Demo</h1>
-      <UserDataTable data={data} columns={columns} />
+      <UserDataTable columns={columns} data={orders} filterBy={"rentalDate"} />
     </div>
   );
 }

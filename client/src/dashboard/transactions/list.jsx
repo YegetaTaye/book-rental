@@ -1,7 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import UserDataTable from "@/dashboard/components/DataTable";
-import { data, columns } from "@/dashboard/users/userTableConfig";
+import {
+  transactions,
+  columns,
+} from "@/dashboard/transactions/TransactionTable.config";
 
 export default function Order() {
   const [orders, setOrders] = useState([]);
@@ -41,7 +44,11 @@ export default function Order() {
   return (
     <div className="container mx-auto py-10">
       <h1 className="text-2xl font-bold mb-5">Transactions Data Table Demo</h1>
-      <UserDataTable data={data} columns={columns} />
+      <UserDataTable
+        columns={columns}
+        data={transactions}
+        filterBy={"fullName"}
+      />
     </div>
   );
 }

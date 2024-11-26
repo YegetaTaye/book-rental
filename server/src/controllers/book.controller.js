@@ -9,6 +9,7 @@ module.exports = {
       const {
         title,
         author,
+        bookCode,
         publicationYear,
         totalCopies,
         availableCopies,
@@ -23,6 +24,7 @@ module.exports = {
       const newBook = {
         title: title,
         author: author,
+        bookCode: bookCode,
         publicationYear: publicationYear,
         totalCopies: totalCopies,
         availableCopies: availableCopies,
@@ -30,20 +32,20 @@ module.exports = {
       };
 
       const book = await Book.create(newBook);
-      return res.status(201).send(book);
+      return res.status(201).json(book);
     } catch (err) {
       console.log(err.message);
-      res.status(500).send({ msg: err.message });
+      res.status(500).json({ msg: err.message });
     }
   },
   // Function to Get All Books from database
   getAllBook: async (req, res) => {
     try {
       const books = await Book.find({});
-      return res.status(200).json({ count: await books.length, data: books });
+      return res.status(200).json({ count: books.length, data: books });
     } catch (err) {
       console.log(err);
-      res.status(500).send({ msg: err.message });
+      res.status(500).json({ msg: err.message });
     }
   },
   //Function to get one book from database by id
@@ -56,7 +58,7 @@ module.exports = {
       return res.status(200).json(book);
     } catch (err) {
       console.log(err.message);
-      res.status(500).send({ msg: err.message });
+      res.status(500).json({ msg: err.message });
     }
   },
   //Function to update a book
@@ -73,40 +75,31 @@ module.exports = {
         rentalFee,
       } = req.body;
       // console.log(title, author, publicationYear, totalCopies, availableCopies, rentalFee)
+      if (availableCopies > totalCopies)
+        return res.status(404).json({
+          msg: "Available copies can't be greater than total copies.",
+        });
 
-      if (
-        !title ||
-        !author ||
-        !publicationYear ||
-        !totalCopies ||
-        !availableCopies ||
-        !rentalFee
-      )
-        return res
-          .status(400)
-          .json({ msg: "Not all fields have been provided" });
-
-      console.log(req.body);
       const updated = await Book.findByIdAndUpdate(id, req.body);
 
       if (!updated) return res.status(404).json({ msg: "Book not found" });
-      return res.status(200).send({ msg: "Book updated successfully" });
+      return res.status(200).json({ msg: "Book updated successfully" });
     } catch (err) {
       console.log(err.message);
-      res.status(500).send({ msg: err.message });
+      res.status(500).json({ msg: err.message });
     }
   },
   //Function to delete one book
   deleteBook: async (req, res) => {
     try {
       const { id } = req.params;
-      console.log(id);
+
       const book = await Book.findOneAndDelete({ _id: id });
       if (!book) return res.status(400).json({ msg: "Book not found" });
-      return res.status(200).send({ msg: "Book deleted successfully" });
+      return res.status(200).json({ msg: "Book deleted successfully" });
     } catch (err) {
       console.log(err.message);
-      return res.status(500).send({ msg: err.message });
+      return res.status(500).json({ msg: err.message });
     }
   },
   // Function to Get The Number of Books
@@ -116,7 +109,7 @@ module.exports = {
       return res.status(200).json({ count: books.length });
     } catch (err) {
       console.log(err);
-      res.status(500).send({ msg: err.message });
+      res.status(500).json({ msg: err.message });
     }
   },
 };

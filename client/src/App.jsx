@@ -23,8 +23,10 @@ import AppStore from "./pages/AppStore";
 import Testimonial from "./pages/Testimonial";
 import OrderPopup from "./components/OrderPopup";
 // import DashboardLayout from "./dashboard/DashboardLayout";
-import UploadBook from "./dashboard/books/new";
+import UploadBook from "./dashboard/books/NewBookPage";
 import Books from "./dashboard/books/list";
+import BookEditPage from "./dashboard/books/BookEditPage";
+import NewBookPage from "./dashboard/books/NewBookPage";
 import UsersList from "./dashboard/users/usersList";
 import AdminsList from "./dashboard/users/adminsList";
 import Order from "./dashboard/orders/list";
@@ -116,12 +118,17 @@ function App() {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route path="" element={<Analytics />} />
             <Route path="orders" element={<Order />} />
+            <Route path="orders/:id" element={<BookEditPage />} />
             <Route path="transactions" element={<Transactions />} />
+            <Route path="transactions/:id" element={<BookEditPage />} />
             <Route path="upload" element={<UploadBook />} />
             <Route path="books" element={<Books />} />
-            <Route path="books/new" element={<Books />} />
+            <Route path="books/:id" element={<BookEditPage />} />
+            <Route path="books/new" element={<NewBookPage />} />
             <Route path="users" element={<UsersList />} />
             <Route path="admins" element={<AdminsList />} />
+            <Route path="admins/new" element={<NewBookPage />} />
+            <Route path="admins/:id" element={<BookEditPage />} />
           </Route>
 
           <Route>

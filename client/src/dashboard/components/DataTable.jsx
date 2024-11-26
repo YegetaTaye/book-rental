@@ -1,6 +1,5 @@
-"use client";
-
 import * as React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   flexRender,
   getCoreRowModel,
@@ -9,7 +8,7 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
 } from "@tanstack/react-table";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -28,11 +27,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-export default function UserDataTable({ data, columns, filterBy }) {
+export default function UserDataTable({ data, columns, filterBy, identifier }) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const currentPath = location.pathname.split("/").pop();
+  const handleRowClick = (row) => {
+    navigate(`/dashboard/${currentPath}/${row.id}`);
+  };
 
   const table = useReactTable({
     data,
@@ -86,6 +93,14 @@ export default function UserDataTable({ data, columns, filterBy }) {
               ))}
           </DropdownMenuContent>
         </DropdownMenu>
+        {identifier == "admin" && (
+          <Button
+            className="ml-2"
+            onClick={() => navigate(`/dashboard/admins/new`)}
+          >
+            <Plus /> Add Admin
+          </Button>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>
@@ -111,6 +126,13 @@ export default function UserDataTable({ data, columns, filterBy }) {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={
+                    identifier !== "user" &&
+                    (() => handleRowClick(row.original))
+                  }
+                  className={`${
+                    identifier !== "user" && "cursor-pointer hover:bg-muted/50"
+                  }`}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

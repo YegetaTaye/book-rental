@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import UserDataTable from "@/dashboard/components/DataTable";
-import { data, columns } from "@/dashboard/users/userTableConfig";
+import { users, columns } from "@/dashboard/users/UsersTableConfig";
 
 export default function UsersList() {
-  const [users, setusers] = useState([]);
+  // const [users, setusers] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +29,12 @@ export default function UsersList() {
   return (
     <div className="container mx-auto py-10">
       <h1 className="text-2xl font-bold mb-5">Users Data Table Demo</h1>
-      <UserDataTable data={data} columns={columns} />
+      <UserDataTable
+        columns={columns}
+        data={users}
+        filterBy={"email"}
+        identifier={"user"}
+      />
     </div>
   );
 }

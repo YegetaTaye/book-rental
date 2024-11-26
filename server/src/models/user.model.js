@@ -5,10 +5,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // username: {
-  //   type: String,
-  //   required: true,
-  // },
   password: {
     type: String,
     required: true,
@@ -24,6 +20,14 @@ const UserSchema = new mongoose.Schema({
   idNumber: {
     type: String,
     required: true,
+  },
+  blockNumber: {
+    type: String,
+    required: true,
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false,
   },
 });
 
