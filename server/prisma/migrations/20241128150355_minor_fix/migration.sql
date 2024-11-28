@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `book` ADD COLUMN `tag` VARCHAR(191) NULL;
