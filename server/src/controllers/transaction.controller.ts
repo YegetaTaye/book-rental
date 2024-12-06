@@ -82,6 +82,23 @@ export const getTransactions = catchAsync(
         where: {
           id: parseInt(id),
         },
+        select: {
+          id: true,
+          rentalDate: true,
+          dueDate: true,
+          returnedDate: true,
+          status: true,
+          user: {
+            select: {
+              fullName: true,
+            },
+          },
+          book: {
+            select: {
+              title: true,
+            },
+          },
+        },
       });
 
       if (!transactions) {
@@ -94,9 +111,44 @@ export const getTransactions = catchAsync(
         where: {
           status: status as TransactionStatus,
         },
+        select: {
+          id: true,
+          rentalDate: true,
+          dueDate: true,
+          returnedDate: true,
+          status: true,
+          user: {
+            select: {
+              fullName: true,
+            },
+          },
+          book: {
+            select: {
+              title: true,
+            },
+          },
+        },
       });
     } else {
-      transactions = await prisma.transaction.findMany();
+      transactions = await prisma.transaction.findMany({
+        select: {
+          id: true,
+          rentalDate: true,
+          dueDate: true,
+          returnedDate: true,
+          status: true,
+          user: {
+            select: {
+              fullName: true,
+            },
+          },
+          book: {
+            select: {
+              title: true,
+            },
+          },
+        },
+      });
     }
 
     return res.status(httpStatus.OK).json(transactions);

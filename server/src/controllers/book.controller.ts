@@ -28,7 +28,7 @@ export const addBook = catchAsync(
     if (book)
       return res
         .status(httpStatus.BAD_REQUEST)
-        .json({ msg: "Book already exists with a given book code" });
+        .json({ message: "Book already exists with a given book code" });
 
     await prisma.book.create({
       data: {
@@ -45,7 +45,7 @@ export const addBook = catchAsync(
     });
 
     return res.status(httpStatus.CREATED).json({
-      msg: "Book successfully added",
+      message: "Book successfully added",
     });
   }
 );
@@ -66,7 +66,9 @@ export const getBooks = catchAsync(
       });
 
       if (!books)
-        return res.status(httpStatus.NOT_FOUND).json({ msg: "Book not found" });
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({ message: "Book not found" });
     } else if (bookCode) {
       books = await prisma.book.findMany({
         where: {
@@ -104,9 +106,11 @@ export const updateBook = catchAsync(
     });
 
     if (!book)
-      return res.status(httpStatus.NOT_FOUND).json({ msg: "Book not found" });
+      return res
+        .status(httpStatus.NOT_FOUND)
+        .json({ message: "Book not found" });
 
-    const updatedBook = await prisma.book.update({
+    await prisma.book.update({
       where: {
         id: parseInt(id),
       },
@@ -123,7 +127,7 @@ export const updateBook = catchAsync(
     });
 
     return res.status(httpStatus.OK).json({
-      msg: "Book successfully updated",
+      message: "Book successfully updated",
     });
   }
 );
@@ -140,7 +144,9 @@ export const deleteBook = catchAsync(
     });
 
     if (!book)
-      return res.status(httpStatus.NOT_FOUND).json({ msg: "Book not found" });
+      return res
+        .status(httpStatus.NOT_FOUND)
+        .json({ message: "Book not found" });
 
     await prisma.book.delete({
       where: {
@@ -149,7 +155,7 @@ export const deleteBook = catchAsync(
     });
 
     return res.status(httpStatus.OK).json({
-      msg: "Book successfully deleted",
+      message: "Book successfully deleted",
     });
   }
 );

@@ -4,6 +4,7 @@ export interface userPayload {
   id: Number;
   email: string;
   fullname: string;
+  isAdmin: boolean;
 }
 
 export const userSchema = {

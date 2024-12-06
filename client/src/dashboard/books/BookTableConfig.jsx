@@ -1,6 +1,5 @@
 // userTableConfig.js
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,32 +8,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
-// {
-// id: "489e1d42",
-//   title: "The Great Gatsby",
-//   author: "F. Scott Fitzgerald",
-//   bookCode: "BG123456",
-//   totalCopies: 10,
-//   availableCopies: 7,
-// },
-
-// export const data = [
-//   { id: "728ed52f", amount: 100, status: "pending", email: "m@example.com" },
-//   {
-//     id: "489e1d42",
-//     amount: 125,
-//     status: "processing",
-//     email: "example@gmail.com",
-//   },
-//   {
-//     id: "589e1d42",
-//     amount: 150,
-//     status: "success",
-//     email: "another@example.com",
-//   },
-//   { id: "689e1d42", amount: 175, status: "failed", email: "test@example.com" },
-// ];
 export const books = [
   {
     id: "489e1d42",
@@ -46,50 +21,6 @@ export const books = [
     availableCopies: 7,
     rentalFee: 2,
     lateFeePerDay: 1,
-  },
-  {
-    id: "489e1d43",
-    title: "To Kill a Mockingbird",
-    author: "Harper Lee",
-    bookCode: "BG234567",
-    publicationYear: 1960,
-    totalCopies: 5,
-    availableCopies: 2,
-    rentalFee: 2,
-    lateFeePerDay: 2,
-  },
-  {
-    id: "489e1d44",
-    title: "1984",
-    author: "George Orwell",
-    bookCode: "BG345678",
-    publicationYear: 1949,
-    totalCopies: 8,
-    availableCopies: 4,
-    rentalFee: 2,
-    lateFeePerDay: 3,
-  },
-  {
-    id: "489e1d45",
-    title: "አማርኛ",
-    author: "Herman Melville",
-    bookCode: "BG456789",
-    publicationYear: 1851,
-    totalCopies: 6,
-    availableCopies: 1,
-    rentalFee: 2,
-    lateFeePerDay: 1,
-  },
-  {
-    id: "489e1d46",
-    title: "Pride and Prejudice",
-    author: "Jane Austen",
-    bookCode: "BG567890",
-    publicationYear: 1813,
-    totalCopies: 12,
-    availableCopies: 10,
-    rentalFee: 2,
-    lateFeePerDay: 2,
   },
 ];
 

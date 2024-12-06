@@ -60,9 +60,9 @@ export const users = [
 
 export const columns = [
   {
-    accessorKey: "_id",
+    accessorKey: "id",
     header: "User ID",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("_id")}</div>,
+    cell: ({ row }) => <div className="capitalize">{row.getValue("id")}</div>,
   },
   {
     accessorKey: "fullName",

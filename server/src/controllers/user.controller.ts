@@ -26,7 +26,7 @@ export const userSignup = catchAsync(
     if (user)
       return res
         .status(httpStatus.BAD_REQUEST)
-        .json({ msg: "User already exists with this email" });
+        .json({ message: "User already exists with this email" });
 
     const salt = await generateSalt();
     const hashedPassword = await generatePassword(password, salt);
@@ -48,10 +48,11 @@ export const userSignup = catchAsync(
       id: newUser.id,
       email: newUser.email,
       fullname: newUser.fullName,
+      isAdmin: newUser.isAdmin,
     });
 
     return res.status(httpStatus.CREATED).json({
-      msg: "Successfully signed up",
+      message: "Successfully signed up",
       token,
       id: newUser.id,
       email: newUser.email,
@@ -70,7 +71,9 @@ export const userLogin = catchAsync(
     });
 
     if (!user)
-      return res.status(httpStatus.BAD_REQUEST).json({ msg: "User not found" });
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ message: "User not found" });
 
     if (!(await ValidatePassword(password, user.password, user.salt)))
       return res
@@ -81,10 +84,11 @@ export const userLogin = catchAsync(
       id: user.id,
       email: user.email,
       fullname: user.fullName,
+      isAdmin: user.isAdmin,
     });
 
     return res.status(httpStatus.CREATED).json({
-      msg: "Successfully logged in",
+      message: "Successfully logged in",
       token,
       id: user.id,
       email: user.email,
@@ -95,9 +99,12 @@ export const userLogin = catchAsync(
 
 export const getUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    // console.log("authenticate --->  ", req.user);
+
     const { id } = req.params;
-    let { email } = req.query;
+    let { email, isAdmin } = req.query;
     email = Array.isArray(email) ? email[0] : email;
+    console.log(req.query);
 
     let user;
 
@@ -107,21 +114,65 @@ export const getUsers = catchAsync(
         where: {
           id: parseInt(id),
         },
+        select: {
+          id: true,
+          email: true,
+          fullName: true,
+          phone: true,
+          idNumber: true,
+          blockNumber: true,
+        },
       });
 
       if (!user)
-        return res.status(httpStatus.NOT_FOUND).json({ msg: "User not found" });
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({ message: "User not found" });
     } else if (email) {
       user = await prisma.user.findUnique({
         where: {
           email: typeof email === "string" ? email : undefined,
         },
+        select: {
+          id: true,
+          email: true,
+          fullName: true,
+          phone: true,
+          idNumber: true,
+          blockNumber: true,
+        },
       });
 
       if (!user)
-        return res.status(httpStatus.NOT_FOUND).json({ msg: "User not found" });
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({ message: "User not found" });
+    } else if (isAdmin) {
+      user = await prisma.user.findMany({
+        where: {
+          isAdmin:
+            typeof isAdmin === "string" ? JSON.parse(isAdmin) : undefined,
+        },
+        select: {
+          id: true,
+          email: true,
+          fullName: true,
+          phone: true,
+          idNumber: true,
+          blockNumber: true,
+        },
+      });
     } else {
-      user = await prisma.user.findMany();
+      user = await prisma.user.findMany({
+        select: {
+          id: true,
+          email: true,
+          fullName: true,
+          phone: true,
+          idNumber: true,
+          blockNumber: true,
+        },
+      });
     }
 
     return res.status(httpStatus.OK).json(user);
@@ -143,7 +194,9 @@ export const updateUser = catchAsync(
     });
 
     if (!user)
-      return res.status(httpStatus.NOT_FOUND).json({ msg: "User not found" });
+      return res
+        .status(httpStatus.NOT_FOUND)
+        .json({ message: "User not found" });
 
     let hashedPassword = user.password;
     let salt = user.salt;
@@ -173,10 +226,11 @@ export const updateUser = catchAsync(
       id: user.id,
       email: user.email,
       fullname: user.fullName,
+      isAdmin: user.isAdmin,
     });
 
     return res.status(httpStatus.OK).json({
-      msg: "User successfully updated",
+      message: "User successfully updated",
       token,
       id: user.id,
       email: user.email,
@@ -198,7 +252,9 @@ export const deleteUser = catchAsync(
     });
 
     if (!user)
-      return res.status(httpStatus.NOT_FOUND).json({ msg: "User not found" });
+      return res
+        .status(httpStatus.NOT_FOUND)
+        .json({ message: "User not found" });
 
     await prisma.user.delete({
       where: {
@@ -206,6 +262,8 @@ export const deleteUser = catchAsync(
       },
     });
 
-    return res.status(httpStatus.OK).json({ msg: "User successfully deleted" });
+    return res
+      .status(httpStatus.OK)
+      .json({ message: "User successfully deleted" });
   }
 );

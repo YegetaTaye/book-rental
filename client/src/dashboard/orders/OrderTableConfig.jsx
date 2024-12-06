@@ -13,32 +13,37 @@ import {
 export const orders = [
   {
     id: "60d5f484f3a4d53c2c8b4561",
-    userId: "60d5f484f3a4d53c2c8b4567", // Random ObjectId string
-    bookId: "60d5f484f3a4d53c2c8b4568", // Random ObjectId string
+    fullName: "60d5f484f3a4d53c2c8b4567", // Random ObjectId string
+    title: "60d5f484f3a4d53c2c8b4568",
+    status: "Pending", // Random ObjectId string
     orderDate: "2023-01-01T10:00:00.000Z",
   },
   {
     id: "60d5f484f3a4d53c2c8b4562",
-    userId: "60d5f484f3a4d53c2c8b4569", // Random ObjectId string
-    bookId: "60d5f484f3a4d53c2c8b456a", // Random ObjectId string
+    fullName: "60d5f484f3a4d53c2c8b4569", // Random ObjectId string
+    title: "60d5f484f3a4d53c2c8b456a",
+    status: "Pending", // Random ObjectId string
     orderDate: "2023-02-02T11:00:00.000Z",
   },
   {
     id: "60d5f484f3a4d53c2c8b4563",
-    userId: "60d5f484f3a4d53c2c8b456b", // Random ObjectId string
-    bookId: "60d5f484f3a4d53c2c8b456c", // Random ObjectId string
+    fullName: "60d5f484f3a4d53c2c8b456b", // Random ObjectId string
+    title: "60d5f484f3a4d53c2c8b456c",
+    status: "Pending", // Random ObjectId string
     orderDate: "2023-03-03T12:00:00.000Z",
   },
   {
     id: "60d5f484f3a4d53c2c8b4564",
-    userId: "60d5f484f3a4d53c2c8b456d", // Random ObjectId string
-    bookId: "60d5f484f3a4d53c2c8b456e", // Random ObjectId string
+    fullName: "60d5f484f3a4d53c2c8b456d", // Random ObjectId string
+    title: "60d5f484f3a4d53c2c8b456e",
+    status: "Pending", // Random ObjectId string
     orderDate: "2023-03-04T13:00:00.000Z",
   },
   {
     id: "60d5f484f3a4d53c2c8b4569",
-    userId: "60d5f484f3a4d53c2c8b456f", // Random ObjectId string
-    bookId: "60d5f484f3a4d53c2c8b4570", // Random ObjectId string
+    fullName: "60d5f484f3a4d53c2c8b456f", // Random ObjectId string
+    title: "60d5f484f3a4d53c2c8b4570",
+    status: "Pending", // Random ObjectId string
     orderDate: "2023-04-05T14:00:00.000Z",
   },
 ];
@@ -50,17 +55,24 @@ export const columns = [
     cell: ({ row }) => <div className="capitalize">{row.getValue("id")}</div>,
   },
   {
-    accessorKey: "userId",
-    header: "User Id",
+    accessorKey: "fullName",
+    header: "User Name",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("userId")}</div>
+      <div className="capitalize">{row.getValue("fullName")}</div>
     ),
   },
   {
-    accessorKey: "bookId",
-    header: "Book Id",
+    accessorKey: "title",
+    header: "Book title",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("bookId")}</div>
+      <div className="capitalize">{row.getValue("title")}</div>
+    ),
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("status")}</div>
     ),
   },
 

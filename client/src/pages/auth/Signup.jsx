@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
@@ -16,48 +14,41 @@ import {
 } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { useSignup } from "@/hooks/useAuth";
 
 // Zod schema for form validation
 const signupSchema = z.object({
-  name: z
+  fullName: z
     .string()
     .min(2, { message: "Name must be at least 2 characters long" }),
   email: z.string().email({ message: "Invalid email address" }),
   phone: z
     .string()
     .min(10, { message: "Phone number must be at least 10 characters long" }),
-  id_number: z
+  idNumber: z
     .string()
     .min(10, { message: "ID number must be 10 characters long" }),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters long" }),
+  blockNumber: z
+    .string()
+    .length(2, { message: "Block number must be 2 numbers long" }),
 });
-
-// Simulated signup API call
-const signupApi = async (userData) => {
-  await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
-  if (userData.email === "user@example.com") {
-    throw new Error("Email already in use");
-  }
-  return { success: true, message: "Sign up successful" };
-};
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
-    name: "",
+    fullName: "",
     email: "",
     phone: "",
-    id_number: "",
+    idNumber: "",
     password: "",
+    blockNumber: "",
   });
   const [validationErrors, setValidationErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { isLoading, isError, error, isSuccess, refetch } = useQuery({
-    queryKey: ["signup"],
-    queryFn: () => signupApi(formData),
-    enabled: false, // Don't run query on component mount
-  });
+  const { mutate: signup, error, isSuccess, isError } = useSignup();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -73,8 +64,10 @@ export default function SignupPage() {
 
     try {
       signupSchema.parse(formData);
-      refetch(); // Trigger the signup query
+      setIsSubmitting(true);
+      signup(formData, { onSettled: () => setIsSubmitting(false) });
     } catch (error) {
+      setIsSubmitting(false);
       if (error instanceof z.ZodError) {
         setValidationErrors(error.flatten().fieldErrors);
       }
@@ -96,16 +89,16 @@ export default function SignupPage() {
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="name">Name</Label>
                 <Input
-                  id="name"
-                  name="name"
-                  placeholder="John Doe"
+                  id="fullName"
+                  name="fullName"
+                  placeholder="Solomon Dawit "
                   value={formData.name}
                   required
                   onChange={handleInputChange}
                 />
-                {validationErrors.name && (
+                {validationErrors.fullName && (
                   <p className="text-sm text-red-500">
-                    {validationErrors.name}
+                    {validationErrors.fullName}
                   </p>
                 )}
               </div>
@@ -115,7 +108,7 @@ export default function SignupPage() {
                   id="email"
                   name="email"
                   type="email"
-                  placeholder="john@example.com"
+                  placeholder="solomon@example.com"
                   value={formData.email}
                   required
                   onChange={handleInputChange}
@@ -130,6 +123,7 @@ export default function SignupPage() {
                 <Label htmlFor="phone">Phone</Label>
                 <Input
                   id="phone"
+                  name="phone"
                   type="phone"
                   placeholder="0911223344"
                   value={formData.phone}
@@ -143,18 +137,36 @@ export default function SignupPage() {
                 )}
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="id_number">ID Number</Label>
+                <Label htmlFor="idNumber">ID Number</Label>
                 <Input
-                  id="id_number"
-                  type="id_number"
+                  id="idNumber"
+                  name="idNumber"
+                  type="idNumber"
                   placeholder="ETS1234/13"
-                  value={formData.id_number}
+                  value={formData.idNumber}
                   required
                   onChange={handleInputChange}
                 />
-                {validationErrors.id_number && (
+                {validationErrors.idNumber && (
                   <p className="text-sm text-red-500">
-                    {validationErrors.id_number}
+                    {validationErrors.idNumber}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="id_number">Block Number</Label>
+                <Input
+                  id="blockNumber"
+                  type="blockNumber"
+                  name="blockNumber"
+                  placeholder="17"
+                  value={formData.blockNumber}
+                  required
+                  onChange={handleInputChange}
+                />
+                {validationErrors.blockNumber && (
+                  <p className="text-sm text-red-500">
+                    {validationErrors.blockNumber}
                   </p>
                 )}
               </div>
@@ -165,7 +177,7 @@ export default function SignupPage() {
                   name="password"
                   type="password"
                   value={formData.password}
-                  placeholder="********"
+                  placeholder=""
                   required
                   onChange={handleInputChange}
                 />
@@ -178,8 +190,8 @@ export default function SignupPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col">
-            <Button className="w-full" type="submit" disabled={isLoading}>
-              {isLoading ? (
+            <Button className="w-full" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? (
                 <>
                   <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
                   Signing up...
@@ -191,7 +203,9 @@ export default function SignupPage() {
             {isError && (
               <Alert variant="destructive" className="mt-4">
                 <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{error.message}</AlertDescription>
+                <AlertDescription>
+                  {error?.response?.data?.message || error.message}
+                </AlertDescription>
               </Alert>
             )}
             {isSuccess && (

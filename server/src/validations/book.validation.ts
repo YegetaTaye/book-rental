@@ -20,7 +20,7 @@ export const bookSchema = {
       "any.required": '"bookCode" is a required field',
     }),
 
-    tag: Joi.string().optional().messages({
+    tag: Joi.string().allow(null).optional().messages({
       "string.base": '"tag" should be a type of string',
     }),
 

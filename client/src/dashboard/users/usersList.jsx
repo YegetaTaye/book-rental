@@ -2,27 +2,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import UserDataTable from "@/dashboard/components/DataTable";
 import { users, columns } from "@/dashboard/users/UsersTableConfig";
+import useUsers from "@/hooks/useUsers";
 
 export default function UsersList() {
-  // const [users, setusers] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const usersData = await axios.get("http://localhost:3000/user");
-        setusers(usersData.data.data);
-      } catch (err) {
-        console.log(err.message);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { data: users, isLoading, isError } = useUsers();
 
   const handleDelete = async (e) => {
-    console.log(e);
     const deletedUser = await axios.delete(`http://localhost:3000/user/${e}`);
-    // alert(deletedUser.data.msg);
     window.location.reload(true);
   };
 
@@ -31,7 +17,7 @@ export default function UsersList() {
       <h1 className="text-2xl font-bold mb-5">Users Data Table Demo</h1>
       <UserDataTable
         columns={columns}
-        data={users}
+        data={users || []}
         filterBy={"email"}
         identifier={"user"}
       />

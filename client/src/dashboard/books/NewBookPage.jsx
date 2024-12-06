@@ -1,11 +1,5 @@
-"use client";
-
-import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useQuery } from "@tanstack/react-query";
 import {
   Card,
   CardContent,
@@ -14,52 +8,58 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-// import { toast } from "@/components/ui/use-toast";
-
-const bookSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  author: z.string().min(1, "Author is required"),
-  bookCode: z.string().min(1, "Book code is required"),
-  publicationYear: z.number().int().min(1000).max(new Date().getFullYear()),
-  totalCopies: z.number().int().min(1, "Total copies must be at least 1"),
-  availableCopies: z.number().int().min(0),
-  rentalFee: z.number().min(0),
-  lateFeePerDay: z.number().min(0),
-});
-
-const Add = async (data) => {
-  // Simulating an API call
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  return data;
-};
+import { Input } from "@/components/ui/input";
+import useAddBook from "@/hooks/books/useAddBook";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { useState } from "react";
+import { z } from "zod";
+import { bookSchema } from "@/validations";
 
 export default function NewBookPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const [formData, setFormData] = useState({
     title: "",
     author: "",
     bookCode: "",
-    publicationYear: new Date().getFullYear(),
+    publicationYear: "",
     totalCopies: 1,
-    availableCopies: 1,
+    availableCopies: 0,
     rentalFee: 0,
     lateFeePerDay: 0,
   });
-
   const [validationErrors, setValidationErrors] = useState({});
 
-  const { isLoading, isError, error, isSuccess, refetch } = useQuery({
-    queryKey: ["add-book"],
-    queryFn: () => submitBookData(formData),
-    enabled: false, // Don't run query on component mount
+  const {
+    mutate: addBook,
+    isSuccess,
+    isError,
+    error,
+  } = useAddBook(() => {
+    setFormData({
+      title: "",
+      author: "",
+      bookCode: "",
+      publicationYear: "",
+      totalCopies: 1,
+      availableCopies: 0,
+      rentalFee: 0,
+      lateFeePerDay: 0,
+    });
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: [
+        "publicationYear",
+        "totalCopies",
+        "availableCopies",
+        "rentalFee",
+        "lateFeePerDay",
+      ].includes(name)
+        ? parseInt(value, 10)
+        : value,
     }));
   };
 
@@ -69,8 +69,10 @@ export default function NewBookPage() {
 
     try {
       bookSchema.parse(formData);
-      refetch(); // Trigger the signup query
+      setIsSubmitting(true);
+      addBook(formData, { onSettled: () => setIsSubmitting(false) });
     } catch (error) {
+      setIsSubmitting(false);
       if (error instanceof z.ZodError) {
         setValidationErrors(error.flatten().fieldErrors);
       }
@@ -232,7 +234,6 @@ export default function NewBookPage() {
                     type="number"
                     value={formData.rentalFee}
                     onChange={handleInputChange}
-                    required
                     className="mt-1"
                   />
                   {validationErrors.rentalFee && (
@@ -254,7 +255,6 @@ export default function NewBookPage() {
                     type="number"
                     value={formData.lateFeePerDay}
                     onChange={handleInputChange}
-                    required
                     className="mt-1"
                   />
                   {validationErrors.lateFeePerDay && (
@@ -270,9 +270,9 @@ export default function NewBookPage() {
             <Button
               className="self-start px-8 py-2"
               type="submit"
-              disabled={isLoading}
+              disabled={isSubmitting}
             >
-              {isLoading ? (
+              {isSubmitting ? (
                 <>
                   <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
                   Submitting...
@@ -284,11 +284,13 @@ export default function NewBookPage() {
             {isError && (
               <Alert variant="destructive" className="mt-4">
                 <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{error.message}</AlertDescription>
+                <AlertDescription>
+                  {error?.response?.data?.message || error.message}
+                </AlertDescription>
               </Alert>
             )}
             {isSuccess && (
-              <Alert variant="default" className="mt-4">
+              <Alert variant="success" className="mt-4 text-green-600">
                 <AlertTitle>Success</AlertTitle>
                 <AlertDescription>
                   The new book has been added successfully!

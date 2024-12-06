@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
@@ -17,6 +15,7 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
+import { useLogin } from "@/hooks/useAuth";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -25,28 +24,13 @@ const loginSchema = z.object({
     .min(8, { message: "Password must be at least 8 characters long" }),
 });
 
-const loginApi = async (credentials) => {
-  // This is a mock API call. Replace with your actual API endpoint.
-  await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
-  if (
-    credentials.email === "user@example.com" &&
-    credentials.password === "password123"
-  ) {
-    return { success: true, message: "Login successful" };
-  }
-  throw new Error("Invalid credentials");
-};
-
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [validationErrors, setValidationErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { isLoading, isError, error, refetch } = useQuery({
-    queryKey: ["login"],
-    queryFn: () => loginApi({ email, password }),
-    enabled: false, // Don't run query on component mount
-  });
+  const { mutate: login, error } = useLogin();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,8 +38,10 @@ export default function LoginPage() {
 
     try {
       loginSchema.parse({ email, password });
-      refetch(); // Trigger the login query
+      setIsSubmitting(true);
+      login({ email, password }, { onSettled: () => setIsSubmitting(false) });
     } catch (error) {
+      setIsSubmitting(false);
       if (error instanceof z.ZodError) {
         setValidationErrors(error.flatten().fieldErrors);
       }
@@ -109,8 +95,8 @@ export default function LoginPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col">
-            <Button className="w-full" type="submit" disabled={isLoading}>
-              {isLoading ? (
+            <Button className="w-full" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? (
                 <>
                   <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
                   Logging in...
@@ -119,10 +105,15 @@ export default function LoginPage() {
                 "Log in"
               )}
             </Button>
-            {isError && (
+            {error && (
               <Alert variant="destructive" className="mt-4">
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{error.message}</AlertDescription>
+                {/* <AlertTitle>
+                  {" "}
+                  {error?.response?.data?.message || error.message}
+                </AlertTitle> */}
+                <AlertDescription>
+                  {error?.response?.data?.message || error.message}
+                </AlertDescription>
               </Alert>
             )}
             <div className="flex justify-between w-full pt-3">

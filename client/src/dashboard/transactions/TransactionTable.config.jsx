@@ -78,6 +78,13 @@ export const columns = [
     ),
   },
   {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("status")}</div>
+    ),
+  },
+  {
     accessorKey: "rentalDate",
     header: ({ column }) => (
       <Button

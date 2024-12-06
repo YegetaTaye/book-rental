@@ -62,6 +62,21 @@ export const getOrders = catchAsync(
         where: {
           id: parseInt(id),
         },
+        select: {
+          id: true,
+          status: true,
+          orderDate: true,
+          book: {
+            select: {
+              title: true,
+            },
+          },
+          user: {
+            select: {
+              fullName: true,
+            },
+          },
+        },
       });
 
       if (!orders)
@@ -69,7 +84,23 @@ export const getOrders = catchAsync(
           .status(httpStatus.BAD_REQUEST)
           .json({ msg: "Orders do not exist" });
     } else {
-      orders = await prisma.order.findMany();
+      orders = await prisma.order.findMany({
+        select: {
+          id: true,
+          status: true,
+          orderDate: true,
+          book: {
+            select: {
+              title: true,
+            },
+          },
+          user: {
+            select: {
+              fullName: true,
+            },
+          },
+        },
+      });
     }
 
     return res.status(httpStatus.OK).json(orders);
