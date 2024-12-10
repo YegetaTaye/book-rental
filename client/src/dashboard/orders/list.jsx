@@ -3,16 +3,19 @@ import { useEffect, useState } from "react";
 import UserDataTable from "@/dashboard/components/DataTable";
 import { orders, columns } from "@/dashboard/orders/OrderTableConfig";
 import useOrders from "@/hooks/useOrders";
+import formatDate from "@/services/formatDate";
 
 export default function Order() {
   const { data: orders, isLoading, isError } = useOrders();
 
-  const mappedOrders = orders?.map((item) => ({
-    id: item.id,
-    status: item.status,
-    orderDate: item.orderDate,
-    fullName: item.user.fullName,
-    title: item.book.title,
+  const mappedOrders = orders?.map((order) => ({
+    id: order.id,
+    status: order.status,
+    orderDate: formatDate(order.orderDate),
+    fullName: order.user.fullName,
+    userId: order.user.id,
+    title: order.book.title,
+    bookId: order.book.id,
   }));
 
   return (
@@ -21,7 +24,7 @@ export default function Order() {
       <UserDataTable
         columns={columns}
         data={mappedOrders || []}
-        filterBy={"rentalDate"}
+        filterBy={"status"}
       />
     </div>
   );

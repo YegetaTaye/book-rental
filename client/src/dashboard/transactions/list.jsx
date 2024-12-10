@@ -6,6 +6,7 @@ import {
   columns,
 } from "@/dashboard/transactions/TransactionTable.config";
 import useTransactions from "@/hooks/useTransactions";
+import formatDate from "@/services/formatDate";
 
 export default function Transactions() {
   const { data: transactions, isLoading, isError } = useTransactions();
@@ -15,7 +16,7 @@ export default function Transactions() {
     fullName: item.user.fullName,
     title: item.book.title,
     status: item.status,
-    rentalDate: item.rentalDate,
+    rentalDate: formatDate(item.rentalDate),
     dueDate: item.dueDate,
     returnedDate: item.returnedDate,
   }));

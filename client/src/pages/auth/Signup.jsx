@@ -15,26 +15,7 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useSignup } from "@/hooks/useAuth";
-
-// Zod schema for form validation
-const signupSchema = z.object({
-  fullName: z
-    .string()
-    .min(2, { message: "Name must be at least 2 characters long" }),
-  email: z.string().email({ message: "Invalid email address" }),
-  phone: z
-    .string()
-    .min(10, { message: "Phone number must be at least 10 characters long" }),
-  idNumber: z
-    .string()
-    .min(10, { message: "ID number must be 10 characters long" }),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters long" }),
-  blockNumber: z
-    .string()
-    .length(2, { message: "Block number must be 2 numbers long" }),
-});
+import { signupSchema } from "@/validations";
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({

@@ -44,3 +44,17 @@ export const orderSchema = {
     }),
   }),
 };
+
+export const statusSchema = {
+  body: Joi.object().keys({
+    status: Joi.string().valid("ACCEPTED", "CANCELLED").required().messages({
+      "string.base": '"status" should be a type of string',
+      "string.empty": '"status" cannot be an empty field',
+      "any.required": '"status" is a required field',
+    }),
+    dueDate: Joi.date().required().messages({
+      "date.base": '"dueDate" should be a valid date',
+      "any.required": '"dueDate" is a required field',
+    }),
+  }),
+};

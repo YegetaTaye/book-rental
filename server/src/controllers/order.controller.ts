@@ -21,7 +21,7 @@ export const addOrder = catchAsync(
     if (!user)
       return res
         .status(httpStatus.BAD_REQUEST)
-        .json({ msg: "User does not exist" });
+        .json({ message: "User does not exist" });
 
     const book = await prisma.book.findUnique({
       where: {
@@ -32,7 +32,7 @@ export const addOrder = catchAsync(
     if (!book)
       return res
         .status(httpStatus.BAD_REQUEST)
-        .json({ msg: "Book does not exist" });
+        .json({ message: "Book does not exist" });
 
     const order = await prisma.order.create({
       data: {
@@ -44,7 +44,7 @@ export const addOrder = catchAsync(
     });
 
     return res.status(httpStatus.CREATED).json({
-      msg: "Order successfully added",
+      message: "Order successfully added",
       order,
     });
   }
@@ -68,11 +68,13 @@ export const getOrders = catchAsync(
           orderDate: true,
           book: {
             select: {
+              id: true,
               title: true,
             },
           },
           user: {
             select: {
+              id: true,
               fullName: true,
             },
           },
@@ -82,7 +84,7 @@ export const getOrders = catchAsync(
       if (!orders)
         return res
           .status(httpStatus.BAD_REQUEST)
-          .json({ msg: "Orders do not exist" });
+          .json({ message: "Orders do not exist" });
     } else {
       orders = await prisma.order.findMany({
         select: {
@@ -122,7 +124,7 @@ export const deleteOrder = catchAsync(
     if (!order)
       return res
         .status(httpStatus.BAD_REQUEST)
-        .json({ msg: "Order does not exist" });
+        .json({ message: "Order does not exist" });
 
     await prisma.order.delete({
       where: {
@@ -132,6 +134,91 @@ export const deleteOrder = catchAsync(
 
     return res
       .status(httpStatus.OK)
-      .json({ msg: "Order successfully deleted" });
+      .json({ message: "Order successfully deleted" });
+  }
+);
+
+export const acceptOrder = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const { dueDate } = req.body;
+
+    CheckValidParam(id, res);
+
+    const order = await prisma.order.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (!order)
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ message: "Order does not exist" });
+
+    if (order.status === "ACCEPTED")
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ message: "Order is already accepted" });
+
+    await prisma.transaction.create({
+      data: {
+        userId: order.userId,
+        bookId: order.bookId,
+        dueDate: dueDate,
+        status: "PENDING",
+        rentalDate: new Date(),
+      },
+    });
+
+    await prisma.order.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        status: "ACCEPTED",
+      },
+    });
+
+    return res
+      .status(httpStatus.OK)
+      .json({ message: "Order successfully accepted" });
+  }
+);
+
+export const rejectOrder = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+
+    CheckValidParam(id, res);
+
+    const order = await prisma.order.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    if (!order)
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ message: "Order does not exist" });
+
+    if (order.status === "CANCELLED")
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ message: "Order is already cancelled" });
+
+    await prisma.order.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        status: "CANCELLED",
+      },
+    });
+
+    return res
+      .status(httpStatus.OK)
+      .json({ message: "Order successfully Cancelled" });
   }
 );

@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
 });
 
 class APIClient {
-  endpoint: string;
+  endpoint;
 
   constructor(endpoint) {
     this.endpoint = endpoint;

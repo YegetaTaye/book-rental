@@ -30,7 +30,7 @@ export const transactionSchema = {
         "any.required": '"bookId" is a required field',
       }),
 
-    rentalDate: Joi.date().required().messages({
+    rentalDate: Joi.date().optional().messages({
       "date.base": '"rentalDate" should be a valid date',
       "any.required": '"rentalDate" is a required field',
     }),
@@ -52,11 +52,6 @@ export const transactionSchema = {
 
     returnedDate: Joi.date().optional().messages({
       "date.base": '"returnedDate" should be a valid date',
-    }),
-
-    lateFee: Joi.number().precision(2).min(0).optional().messages({
-      "number.base": '"lateFee" should be a type of number',
-      "number.min": '"lateFee" must be at least 0',
     }),
   }),
 };

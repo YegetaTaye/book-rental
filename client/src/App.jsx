@@ -15,9 +15,12 @@ import {
 } from "./dashboard/books/NewBookPage";
 import Books from "./dashboard/books/list";
 import Order from "./dashboard/orders/list";
+import OrderDetailPage from "./dashboard/orders/OrderDetailPage";
 import Transactions from "./dashboard/transactions/list";
 import AdminsList from "./dashboard/users/adminsList";
+import AddAdminsPage from "./dashboard/users/AddAdminsPage";
 import UsersList from "./dashboard/users/usersList";
+import UserDetailsPage from "./dashboard/users/UserDetailPage";
 import NotFound from "./not-found";
 import TopBooks from "./pages/Books";
 import Hero from "./pages/Hero";
@@ -99,7 +102,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route path="" element={<Analytics />} />
             <Route path="orders" element={<Order />} />
-            <Route path="orders/:id" element={<BookEditPage />} />
+            <Route path="orders/:id" element={<OrderDetailPage />} />
             <Route path="transactions" element={<Transactions />} />
             <Route path="transactions/:id" element={<BookEditPage />} />
             <Route path="upload" element={<UploadBook />} />
@@ -107,8 +110,9 @@ function App() {
             <Route path="books/:id" element={<BookEditPage />} />
             <Route path="books/new" element={<NewBookPage />} />
             <Route path="users" element={<UsersList />} />
+            <Route path="users/:id" element={<UserDetailsPage />} />
             <Route path="admins" element={<AdminsList />} />
-            <Route path="admins/new" element={<NewBookPage />} />
+            <Route path="admins/new" element={<AddAdminsPage />} />
             <Route path="admins/:id" element={<BookEditPage />} />
           </Route>
 

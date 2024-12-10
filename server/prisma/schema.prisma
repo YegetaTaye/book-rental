@@ -56,8 +56,8 @@ model Transaction {
   id           Int               @id @default(autoincrement())
   userId       Int
   bookId       Int
-  rentalDate   DateTime
-  dueDate      Int
+  rentalDate   DateTime          @default(now())
+  dueDate      DateTime
   status       TransactionStatus @default(PENDING)
   returnedDate DateTime?
   createdAt    DateTime          @default(now())

@@ -5,6 +5,7 @@ import APIClient from "@/services/apiClient";
 
 const loginApi = new APIClient("users/login");
 const signupApi = new APIClient("users/signup");
+const addAdminApi = new APIClient("admins");
 
 export const useLogin = () => {
   const navigate = useNavigate();
@@ -39,6 +40,41 @@ export const useSignup = () => {
         "Signup failed:",
         error?.response?.data?.message || error.message
       );
+    },
+  });
+};
+
+export const useAddAdmins = (onAdd) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: addAdminApi.post,
+
+    onMutate: (newAdmin) => {
+      // console.log("new: ", newBook);
+      const previousAdmins = queryClient.getQueryData(["admins"]) || [];
+
+      queryClient.setQueryData(["admins"], (admins = []) => [
+        newAdmin,
+        ...admins,
+      ]);
+
+      return { previousAdmins };
+    },
+
+    onSuccess: (savedAdmins, newAdmin) => {
+      console.log("Admin added:", savedAdmins);
+      onAdd();
+
+      queryClient.setQueryData(["admins"], (admins) =>
+        admins?.map((admin) => (admin === newAdmin ? savedAdmins : admin))
+      );
+    },
+
+    onError: (error, newAdmin, context) => {
+      if (!context) return;
+
+      queryClient.setQueryData(["admins"], context.previousAdmins);
     },
   });
 };
