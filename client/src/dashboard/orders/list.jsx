@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import UserDataTable from "@/dashboard/components/DataTable";
 import { orders, columns } from "@/dashboard/orders/OrderTableConfig";
-import useOrders from "@/hooks/useOrders";
+import useOrders from "@/hooks/orders/useOrders";
 import formatDate from "@/services/formatDate";
 
 export default function Order() {

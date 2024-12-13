@@ -5,7 +5,7 @@ import {
   transactions,
   columns,
 } from "@/dashboard/transactions/TransactionTable.config";
-import useTransactions from "@/hooks/useTransactions";
+import useTransactions from "@/hooks/transactions/useTransactions";
 import formatDate from "@/services/formatDate";
 
 export default function Transactions() {

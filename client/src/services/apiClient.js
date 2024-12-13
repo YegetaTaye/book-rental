@@ -31,6 +31,13 @@ class APIClient {
       .then((res) => res.data);
   };
 
+  putt = (id, route, data) => {
+    console.log("`first", `${this.endpoint}/${id}/${route}`);
+    return axiosInstance
+      .put(`${this.endpoint}/${id}/${route}`, data)
+      .then((res) => res.data);
+  };
+
   delete = (id) => {
     return axiosInstance
       .delete(`${this.endpoint}/${id}`)

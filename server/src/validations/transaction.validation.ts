@@ -35,7 +35,7 @@ export const transactionSchema = {
       "any.required": '"rentalDate" is a required field',
     }),
 
-    dueDate: Joi.number().integer().min(0).required().messages({
+    dueDate: Joi.date().required().messages({
       "number.base": '"dueDate" should be a type of number',
       "number.integer": '"dueDate" must be an integer',
       "number.min": '"dueDate" must be at least 0',
@@ -52,6 +52,15 @@ export const transactionSchema = {
 
     returnedDate: Joi.date().optional().messages({
       "date.base": '"returnedDate" should be a valid date',
+    }),
+  }),
+};
+
+export const returnTransactionSchema = {
+  body: Joi.object().keys({
+    returnedDate: Joi.date().required().messages({
+      "date.base": '"returnedDate" should be a valid date',
+      "any.required": '"returnedDate" is a required field',
     }),
   }),
 };

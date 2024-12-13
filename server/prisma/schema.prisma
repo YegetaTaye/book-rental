@@ -58,6 +58,7 @@ model Transaction {
   bookId       Int
   rentalDate   DateTime          @default(now())
   dueDate      DateTime
+  fee          Float?            @default(0)
   status       TransactionStatus @default(PENDING)
   returnedDate DateTime?
   createdAt    DateTime          @default(now())

@@ -22,7 +22,7 @@ export const addTransaction = catchAsync(
     if (!user)
       return res
         .status(httpStatus.BAD_REQUEST)
-        .json({ msg: "User does not exist" });
+        .json({ message: "User does not exist" });
 
     const book = await prisma.book.findUnique({
       where: {
@@ -33,12 +33,12 @@ export const addTransaction = catchAsync(
     if (!book)
       return res
         .status(httpStatus.BAD_REQUEST)
-        .json({ msg: "Book does not exist" });
+        .json({ message: "Book does not exist" });
     else {
       if (book.availableCopies <= 0)
         return res
           .status(httpStatus.BAD_REQUEST)
-          .json({ msg: "Book is not available in store at moment" });
+          .json({ message: "Book is not available in store at moment" });
     }
 
     const transaction = await prisma.transaction.create({
@@ -62,7 +62,7 @@ export const addTransaction = catchAsync(
     });
 
     return res.status(httpStatus.CREATED).json({
-      msg: "Transaction successfully added",
+      message: "Transaction successfully added",
       transaction,
     });
   }
@@ -88,13 +88,16 @@ export const getTransactions = catchAsync(
           dueDate: true,
           returnedDate: true,
           status: true,
+          fee: true,
           user: {
             select: {
+              id: true,
               fullName: true,
             },
           },
           book: {
             select: {
+              id: true,
               title: true,
             },
           },
@@ -117,6 +120,7 @@ export const getTransactions = catchAsync(
           dueDate: true,
           returnedDate: true,
           status: true,
+          fee: true,
           user: {
             select: {
               fullName: true,
@@ -137,6 +141,7 @@ export const getTransactions = catchAsync(
           dueDate: true,
           returnedDate: true,
           status: true,
+          fee: true,
           user: {
             select: {
               fullName: true,
@@ -170,7 +175,7 @@ export const deleteTransaction = catchAsync(
     if (!transaction)
       return res
         .status(httpStatus.BAD_REQUEST)
-        .json({ msg: "Transaction does not exist" });
+        .json({ message: "Transaction does not exist" });
 
     await prisma.transaction.delete({
       where: {
@@ -180,7 +185,7 @@ export const deleteTransaction = catchAsync(
 
     return res
       .status(httpStatus.NO_CONTENT)
-      .json({ msg: "Transaction successfully deleted" });
+      .json({ message: "Transaction successfully deleted" });
   }
 );
 
@@ -203,7 +208,7 @@ export const updateTransaction = catchAsync(
     if (!transaction)
       return res
         .status(httpStatus.BAD_REQUEST)
-        .json({ msg: "Transaction does not exist" });
+        .json({ message: "Transaction does not exist" });
 
     const user = await prisma.user.findUnique({
       where: {
@@ -214,7 +219,7 @@ export const updateTransaction = catchAsync(
     if (!user)
       return res
         .status(httpStatus.BAD_REQUEST)
-        .json({ msg: "User does not exist" });
+        .json({ message: "User does not exist" });
 
     const book = await prisma.book.findUnique({
       where: {
@@ -225,7 +230,7 @@ export const updateTransaction = catchAsync(
     if (!book)
       return res
         .status(httpStatus.BAD_REQUEST)
-        .json({ msg: "Book does not exist" });
+        .json({ message: "Book does not exist" });
 
     await prisma.transaction.update({
       where: {
@@ -243,7 +248,7 @@ export const updateTransaction = catchAsync(
 
     return res
       .status(httpStatus.OK)
-      .json({ msg: "Transaction successfully updated", transaction });
+      .json({ message: "Transaction successfully updated", transaction });
   }
 );
 
@@ -251,6 +256,7 @@ export const returnTransaction = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const { returnedDate } = req.body;
+    // console.log("retunedDate", returnedDate);
 
     CheckValidParam(id, res);
 
@@ -263,14 +269,14 @@ export const returnTransaction = catchAsync(
     if (!transaction)
       return res
         .status(httpStatus.BAD_REQUEST)
-        .json({ msg: "Transaction does not exist" });
+        .json({ message: "Transaction does not exist" });
 
     await prisma.transaction.update({
       where: {
         id: parseInt(id),
       },
       data: {
-        returnedDate: returnedDate,
+        returnedDate: new Date(),
         status: "RETURNED",
       },
     });
@@ -290,8 +296,51 @@ export const returnTransaction = catchAsync(
       },
     });
 
-    return res
-      .status(httpStatus.OK)
-      .json({ msg: "Transaction successfully returned", transaction });
+    const fee = await prisma.book.findUnique({
+      where: {
+        id: transaction.bookId,
+      },
+      select: {
+        rentalFee: true,
+        lateFeePerDay: true,
+      },
+    });
+
+    const dayDiff = (dueDate: Date, returnedDate: Date) => {
+      returnedDate = new Date(returnedDate);
+      // console.log("dueDate", dueDate);
+      // console.log("returnedDate", returnedDate);
+      // console.log(returnedDate > dueDate);
+      if (returnedDate > dueDate) {
+        const diffTime = Math.abs(returnedDate.getTime() - dueDate.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+      }
+      return 0;
+    };
+
+    const rentalfee =
+      fee!.rentalFee * dayDiff(transaction.rentalDate, transaction.dueDate)!;
+
+    const lateFee =
+      fee!.lateFeePerDay * dayDiff(transaction.dueDate, returnedDate);
+
+    const totalFee = rentalfee + lateFee;
+
+    await prisma.transaction.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        fee: totalFee,
+      },
+    });
+
+    return res.status(httpStatus.OK).json({
+      message: "Transaction successfully returned",
+      rentalfee,
+      lateFee,
+      totalFee,
+    });
   }
 );

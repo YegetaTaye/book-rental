@@ -1,13 +1,13 @@
 import express from "express";
 import {
-    addTransaction,
-    deleteTransaction,
-    getTransactions,
-    returnTransaction,
-    updateTransaction,
+  addTransaction,
+  deleteTransaction,
+  getTransactions,
+  returnTransaction,
+  updateTransaction,
 } from "../controllers";
 import { validate } from "../middleware/";
-import { transactionSchema } from "../validations";
+import { transactionSchema, returnTransactionSchema } from "../validations";
 
 const router = express.Router();
 
@@ -18,9 +18,8 @@ router.get("/:id?", getTransactions);
 
 router.post("/", validate(transactionSchema), addTransaction);
 router.put("/:id", validate(transactionSchema), updateTransaction);
-router.post("/:id/return", returnTransaction);
+router.put("/:id/return", validate(returnTransactionSchema), returnTransaction);
 
 router.delete("/:id", deleteTransaction);
 
 export { router as TransactionRoute };
-

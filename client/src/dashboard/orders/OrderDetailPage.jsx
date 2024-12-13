@@ -11,8 +11,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import useOrders from "@/hooks/useOrders";
-import useUpdateOrder from "@/hooks/orderSettle";
+import useOrders from "@/hooks/orders/useOrders";
+import useUpdateOrder from "@/hooks/orders/useSettleOrder";
 import { useToast } from "@/components/hooks/use-toast";
 import { DatePickerWithPresets } from "@/components/ui/date-picker";
 

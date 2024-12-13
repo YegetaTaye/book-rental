@@ -17,6 +17,7 @@ import Books from "./dashboard/books/list";
 import Order from "./dashboard/orders/list";
 import OrderDetailPage from "./dashboard/orders/OrderDetailPage";
 import Transactions from "./dashboard/transactions/list";
+import TransactionListPage from "./dashboard/transactions/TransactionListPage";
 import AdminsList from "./dashboard/users/adminsList";
 import AddAdminsPage from "./dashboard/users/AddAdminsPage";
 import UsersList from "./dashboard/users/usersList";
@@ -104,7 +105,7 @@ function App() {
             <Route path="orders" element={<Order />} />
             <Route path="orders/:id" element={<OrderDetailPage />} />
             <Route path="transactions" element={<Transactions />} />
-            <Route path="transactions/:id" element={<BookEditPage />} />
+            <Route path="transactions/:id" element={<TransactionListPage />} />
             <Route path="upload" element={<UploadBook />} />
             <Route path="books" element={<Books />} />
             <Route path="books/:id" element={<BookEditPage />} />
