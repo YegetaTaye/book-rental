@@ -11,6 +11,7 @@ import {
   UserRoute,
   TransactionRoute,
   Orderoute,
+  AnalyticsRoute,
 } from "./routes";
 
 //Middleware
@@ -25,6 +26,7 @@ app.use("/books", BookRoute);
 app.use("/users", UserRoute);
 app.use("/transactions", TransactionRoute);
 app.use("/orders", Orderoute);
+app.use("/analytics", AnalyticsRoute);
 
 //Error Handling Middleware
 app.use((req, res, next) => {

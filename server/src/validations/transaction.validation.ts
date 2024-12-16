@@ -35,10 +35,9 @@ export const transactionSchema = {
       "any.required": '"rentalDate" is a required field',
     }),
 
-    dueDate: Joi.date().required().messages({
-      "number.base": '"dueDate" should be a type of number',
-      "number.integer": '"dueDate" must be an integer',
-      "number.min": '"dueDate" must be at least 0',
+    dueDate: Joi.date().required().greater(Joi.ref("rentalDate")).messages({
+      "date.base": '"dueDate" should be a valid date',
+      "date.greater": '"dueDate" must be greater than rentalDate',
       "any.required": '"dueDate" is a required field',
     }),
 

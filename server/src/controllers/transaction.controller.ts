@@ -256,7 +256,6 @@ export const returnTransaction = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const { returnedDate } = req.body;
-    // console.log("retunedDate", returnedDate);
 
     CheckValidParam(id, res);
 
@@ -270,6 +269,11 @@ export const returnTransaction = catchAsync(
       return res
         .status(httpStatus.BAD_REQUEST)
         .json({ message: "Transaction does not exist" });
+
+    // if (transaction.status === "RETURNED")
+    //   return res
+    //     .status(httpStatus.BAD_REQUEST)
+    //     .json({ message: "Transaction status is already returned" });
 
     await prisma.transaction.update({
       where: {
@@ -308,9 +312,6 @@ export const returnTransaction = catchAsync(
 
     const dayDiff = (dueDate: Date, returnedDate: Date) => {
       returnedDate = new Date(returnedDate);
-      // console.log("dueDate", dueDate);
-      // console.log("returnedDate", returnedDate);
-      // console.log(returnedDate > dueDate);
       if (returnedDate > dueDate) {
         const diffTime = Math.abs(returnedDate.getTime() - dueDate.getTime());
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -341,6 +342,42 @@ export const returnTransaction = catchAsync(
       rentalfee,
       lateFee,
       totalFee,
+    });
+  }
+);
+
+//check transaction status and if the due date is passed, change the status to overdue
+export const getOverdueTransactions = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        status: "PENDING",
+        dueDate: {
+          lt: new Date(),
+        },
+      },
+    });
+
+    transactions.forEach(async (transaction) => {
+      await prisma.transaction.update({
+        where: {
+          id: transaction.id,
+        },
+        data: {
+          status: "OVERDUE",
+        },
+      });
+    });
+
+    const overdueTransactions = await prisma.transaction.findMany({
+      where: {
+        status: "OVERDUE",
+      },
+    });
+
+    return res.status(httpStatus.OK).json({
+      message: "Transaction status successfully updated",
+      overdueTransactions,
     });
   }
 );

@@ -19,6 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useToast } from "@/components/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -42,6 +43,7 @@ export default function BookEditPage() {
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { toast, dismiss } = useToast();
 
   const params = useParams();
   const bookId = parseInt(params.id, 10);
@@ -72,6 +74,28 @@ export default function BookEditPage() {
       type: "edit",
     }
   );
+
+  useEffect(() => {
+    if (isSuccess) {
+      const toastId = toast({
+        title: "Success",
+        description: "Book updated successfully",
+        variant: "success",
+      });
+      setTimeout(() => dismiss(toastId.id), 3000);
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      const toastId = toast({
+        title: "Error",
+        description: error?.response?.data?.message || error.message,
+        variant: "error",
+      });
+      setTimeout(() => dismiss(toastId.id), 3000);
+    }
+  }, [isError]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -393,22 +417,6 @@ export default function BookEditPage() {
                 </AlertDialogContent>
               </AlertDialog>
             </div>
-            {isError && (
-              <Alert variant="destructive" className="mt-4">
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>
-                  {error?.response?.data?.message || error.message}
-                </AlertDescription>
-              </Alert>
-            )}
-            {isSuccess && (
-              <Alert variant="success" className="mt-4 text-green-600">
-                <AlertTitle>Success</AlertTitle>
-                <AlertDescription>
-                  The book has been updated successfully!
-                </AlertDescription>
-              </Alert>
-            )}
           </CardFooter>
         </form>
       </Card>

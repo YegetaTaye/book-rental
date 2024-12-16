@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 
 export const transactions = [
   {
@@ -80,9 +81,27 @@ export const columns = [
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
-    ),
+    cell: ({ row }) => {
+      const status = row.getValue("status");
+
+      return (
+        <Badge
+          className={`capitalize ${
+            status.toLowerCase() === "returned"
+              ? "bg-green-100 text-green-800 hover:bg-green-100"
+              : status.toLowerCase() === "pending"
+              ? "bg-yellow-200 text-yellow-600 hover:bg-yellow-100"
+              : status.toLowerCase() === "overdue"
+              ? "bg-red-100 text-red-800 hover:bg-red-100"
+              : status.toLowerCase() === "cancelled"
+              ? "bg-red-100 text-red-800 hover:bg-red-100"
+              : "bg-gray-100 text-gray-800 hover:bg-gray-100"
+          }`}
+        >
+          {status}
+        </Badge>
+      );
+    },
   },
   {
     accessorKey: "rentalDate",

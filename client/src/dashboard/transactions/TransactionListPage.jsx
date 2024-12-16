@@ -1,7 +1,14 @@
-import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import formatDate from "@/services/formatDate";
+import { useToast } from "@/components/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,19 +17,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import useTransactions from "@/hooks/transactions/useTransactions";
 import useSettleTransaction from "@/hooks/transactions/useSettleTransaction";
-import { useToast } from "@/components/hooks/use-toast";
+import useTransactions from "@/hooks/transactions/useTransactions";
+import formatCurrency from "@/services/formatCurrency";
+import formatDate from "@/services/formatDate";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
 export default function TransactionListPage() {
   const [isReturning, setIsReturning] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const { toast, dismiss } = useToast();
 
   const params = useParams();
   const transactionId = parseInt(params.id, 10);
-  console.log("Order ID", transactionId);
 
   const {
     data: transaction,
@@ -30,13 +39,13 @@ export default function TransactionListPage() {
     isError,
     error,
   } = useTransactions({ id: transactionId });
-  console.log("transaction: ", transaction);
 
   const {
     mutate: retrunTransaction,
     isSuccess: isSuccessTransaction,
     isError: isErrorTransaction,
     error: errorOnTransaction,
+    data: updatedTransaction,
   } = useSettleTransaction();
 
   useEffect(() => {
@@ -50,14 +59,30 @@ export default function TransactionListPage() {
     }
   }, [isSuccessTransaction]);
 
+  useEffect(() => {
+    if (isErrorTransaction) {
+      const toastId = toast({
+        title: "Error",
+        description:
+          errorOnTransaction?.response?.data?.message ||
+          errorOnTransaction.message,
+        variant: "error",
+      });
+      setTimeout(() => dismiss(toastId.id), 3000);
+    }
+  }, [isErrorTransaction]);
+
   const handleReturn = async (e) => {
     e.preventDefault();
     setIsReturning(true);
     try {
-      retrunTransaction({
-        transactionId,
-        updatedData: { returnedDate: new Date().toISOString() },
-      });
+      retrunTransaction(
+        {
+          transactionId,
+          updatedData: { returnedDate: new Date().toISOString() },
+        },
+        { onSuccess: () => setOpen(true) }
+      );
     } catch (error) {
       console.error(error);
     }
@@ -72,7 +97,7 @@ export default function TransactionListPage() {
     <div className="container mx-auto p-4">
       <Card className="w-full max-w-4xl">
         <CardHeader>
-          <CardTitle>Order Transaction</CardTitle>
+          <CardTitle>Transaction Details</CardTitle>
           <CardDescription>
             Viewing details for transaction ID: {transaction.id}
           </CardDescription>
@@ -139,34 +164,58 @@ export default function TransactionListPage() {
           </div>
         </CardContent>
         <CardFooter className="flex space-x-4 mt-4">
-          {transaction.status === "RETURNED" ? (
+          {/* {transaction.status === "RETURNED" ? (
             <Button disabled={true} className="bg-red-600 hover:bg-red-700">
               Returned
             </Button>
-          ) : (
-            <Button
-              onClick={handleReturn}
-              disabled={isReturning}
-              className="bg-green-600 hover:bg-green-700"
-            >
-              Returned
-            </Button>
-          )}
+          ) : ( */}
+          <Button
+            onClick={handleReturn}
+            disabled={isReturning}
+            className="bg-green-600 hover:bg-green-700"
+          >
+            Returned
+          </Button>
+          {/* )} */}
         </CardFooter>
 
-        {isErrorTransaction && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4">
-            {errorOnTransaction?.response?.data?.message ||
-              errorOnTransaction.message}
-          </div>
-        )}
-
-        {isSuccessTransaction && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4">
-            Order updated successfully
-          </div>
-        )}
+        <TransactionAlertDialog
+          data={updatedTransaction}
+          isOpen={open}
+          onClose={() => setOpen(false)}
+        />
       </Card>
     </div>
+  );
+}
+
+export function TransactionAlertDialog({ data, isOpen, onClose }) {
+  const handleClose = () => {
+    onClose();
+  };
+
+  return (
+    <AlertDialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Transaction Details</AlertDialogTitle>
+          <AlertDialogDescription>{data?.message}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <div className="py-4">
+          <p className="text-sm text-gray-500">
+            Rental Fee: {formatCurrency(data?.rentalFee)}
+          </p>
+          <p className="text-sm text-gray-500">
+            Late Fee: {formatCurrency(data?.lateFee)}
+          </p>
+          <p className="text-sm font-semibold">
+            Total Fee: {formatCurrency(data?.totalFee)}
+          </p>
+        </div>
+        <AlertDialogFooter>
+          <AlertDialogAction onClick={handleClose}>Close</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

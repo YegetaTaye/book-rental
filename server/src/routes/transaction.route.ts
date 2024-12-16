@@ -5,14 +5,15 @@ import {
   getTransactions,
   returnTransaction,
   updateTransaction,
+  getOverdueTransactions,
 } from "../controllers";
 import { validate } from "../middleware/";
 import { transactionSchema, returnTransactionSchema } from "../validations";
 
 const router = express.Router();
 
+router.get("/overdue", getOverdueTransactions);
 router.get("/:id?", getTransactions);
-// router.get("/count", numberOfAllTransaction);
 // router.get("/byUser/:id", getTransactionByUserId);
 // router.get("/:id", getTransactionByTransactionId);
 

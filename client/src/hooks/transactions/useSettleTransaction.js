@@ -5,7 +5,7 @@ const returnTransactionApi = new APIClient("transactions");
 
 const useSettleTransaction = ({ type } = {}) => {
   const queryClient = useQueryClient();
-  console.log("type: ", type);
+  // console.log("type: ", type);
 
   //   const mutationFn =
   //     type === "cancel"
@@ -20,8 +20,6 @@ const useSettleTransaction = ({ type } = {}) => {
 
     // Optimistically update the order cache
     onMutate: async ({ transactionId, updatedData }) => {
-      console.log("transactionId: ", transactionId);
-      console.log("updatedData: ", updatedData);
       await queryClient.cancelQueries(["transaction", transactionId]);
 
       const previousOrder = queryClient.getQueryData([
