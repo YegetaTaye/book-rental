@@ -1,16 +1,18 @@
 import React from "react";
 // import Logo from "../../assets/website/logo.png";
-import Logo from "../../assets/images/logo.png"
+import Logo from "../../assets/images/logo.png";
 import { FaCartShopping } from "react-icons/fa6";
 import DarkMode from "./DarkMode";
 import { FaCaretDown } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
+import { ShoppingCart, User, Menu } from "lucide-react";
 
-const Menu = [
-  {
-    id: 1,
-    name: "Home",
-    link: "/#",
-  },
+const menu = [
+  // {
+  //   id: 1,
+  //   name: "Home",
+  //   link: "/#",
+  // },
   {
     id: 2,
     name: "Best Seller",
@@ -24,7 +26,7 @@ const DropdownLinks = [
     link: "/#",
   },
   {
-    name: "Best Selling",
+    name: "Best Sellingff",
     link: "/#",
   },
   {
@@ -36,21 +38,21 @@ const DropdownLinks = [
 const Navbar = ({ handleOrderPopup }) => {
   return (
     <>
-      <div className="shadow-md bg-white dark:bg-gray-900 dark:text-white duration-200 px-6">
+      <div className="shadow-md bg-white dark:bg-gray-900 dark:text-white duration-200 pl-4 md:pr-8 border-b">
         <div className="container py-3 sm:py-0">
           <div className="flex justify-between items-center">
             <div>
-              <a href="#" className="font-bold text-2xl sm:text-3xl flex gap-2">
+              <a href="#" className="font-bold text-xl sm:text-3xl flex gap-2 ">
                 <img src={Logo} alt="Logo" className="w-10" />
-                Books
+                Arsema
               </a>
             </div>
             <div className="flex justify-between items-center gap-4">
-              <div>
+              {/* <div>
                 <DarkMode />
-              </div>
+              </div> */}
               <ul className="hidden sm:flex items-center gap-4">
-                {Menu.map((menu) => (
+                {menu.map((menu) => (
                   <li key={menu.id}>
                     <a
                       href={menu.link}
@@ -87,13 +89,21 @@ const Navbar = ({ handleOrderPopup }) => {
                   </div>
                 </li>
               </ul>
-              <button
-                onClick={() => handleOrderPopup()}
-                className="bg-gradient-to-r from-primary to-secondary hover:scale-105 duration-200 text-white py-1 px-4 rounded-full flex items-center gap-3"
-              >
-                Order
-                <FaCartShopping className="text-xl text-white drop-shadow-sm cursor-pointer" />
-              </button>
+              <div className="flex items-center gap-4">
+                <Button variant="ghost" size="icon" className="relative">
+                  <ShoppingCart className="h-5 w-5" />
+                  <span className="absolute -top-1 -right-1 bg-purple-600 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">
+                    0
+                  </span>
+                </Button>
+                <Button
+                  variant="outline"
+                  className="hidden md:flex items-center gap-2"
+                >
+                  <User className="h-4 w-4" />
+                  Roberto Karlos
+                </Button>
+              </div>
             </div>
           </div>
         </div>

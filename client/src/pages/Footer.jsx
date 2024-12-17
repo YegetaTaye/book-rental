@@ -9,12 +9,12 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#0a0f1f] text-white py-16 px-32 relative">
+    <footer className="bg-[#0a0f1f] text-white py-16 md:px-32 relative">
       <div className="container mx-auto px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Logo and Address Section */}
           <div className="space-y-4">
-            <div className="text-[#1d9bf0] text-2xl font-bold mb-6">LIFT</div>
+            <div className="text-[#1d9bf0] text-2xl font-bold mb-6">Arsema</div>
             <div className="space-y-1">
               <p>123 Market St. #22B</p>
               <p>Charlottesville, California</p>
@@ -90,7 +90,7 @@ export default function Footer() {
         {/* Back to Top Button */}
         <Button
           onClick={scrollToTop}
-          className="absolute right-32 top-16 bg-[#1d9bf0] hover:bg-[#1a8cd8] rounded-full p-2"
+          className="absolute md:right-32 right-4 top-16 bg-[#1d9bf0] hover:bg-[#1a8cd8] rounded-full p-2"
           size="icon"
           aria-label="Back to top"
         >

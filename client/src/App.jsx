@@ -22,13 +22,14 @@ import UserDetailsPage from "./dashboard/users/UserDetailPage";
 import AdminsList from "./dashboard/users/adminsList";
 import UsersList from "./dashboard/users/usersList";
 import NotFound from "./not-found";
-import TopBooks from "./pages/Books";
+import TopBooks from "./pages/FeaturedBooks";
 import Hero from "./pages/Hero";
 import Services from "./pages/Services";
 import Testimonial from "./pages/Testimonial";
 import LoginPage from "./pages/auth/Login";
 import SignUp from "./pages/auth/Signup";
 import Footer from "./pages/Footer";
+import BooksList from "./pages/BooksList";
 
 function App() {
   // const { user, token } = useSelector((state) => state.user);
@@ -75,8 +76,6 @@ function App() {
         </Routes>
         {/* <Header /> */}
         <Routes>
-          <Route></Route>
-
           <Route
             path="/"
             element={
@@ -88,6 +87,16 @@ function App() {
                 // orderPopup={orderPopup}
                 // setOrderPopup={setOrderPopup}
                 /> */}
+              </>
+            }
+          />
+          <Route
+            path="/books"
+            element={
+              <>
+                {" "}
+                <Navbar />
+                <BooksList />
               </>
             }
           />

@@ -1,4 +1,6 @@
 import React from "react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import Book1 from "../assets/books/book1.jpg";
 import Book2 from "../assets/books/book2.jpg";
 import Book3 from "../assets/books/book3.jpg";
@@ -42,10 +44,10 @@ const booksData = [
 const TopBooks = () => {
   return (
     <>
-      <div className="pt-14 pb-12 bg-white dark:bg-gray-900 dark:text-white duration-200">
+      <div className="pt-14 pb-12 bg-white dark:bg-gray-900 dark:text-white duration-200 min-h-full">
         <div className="container">
           {/* header */}
-          <div className="text-center mb-10 max-w-[600px] mx-auto">
+          <div className="text-center mb-24 max-w-[600px] mx-auto">
             <p className="py-2 text bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
               Top Books for you
             </p>
@@ -75,10 +77,10 @@ const TopBooks = () => {
                 </div>
               ))}
             </div>
-            <div className="flex justify-center">
-              <button className="text-center mt-10 cursor-pointer  bg-primary text-white py-1 px-5 rounded-md">
-                View All Books
-              </button>
+            <div className="flex justify-center items-center mt-10">
+              <Button asChild>
+                <Link to="/books">View All Books</Link>
+              </Button>
             </div>
           </div>
         </div>
