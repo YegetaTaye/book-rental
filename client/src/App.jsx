@@ -2,7 +2,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import OrderPopup from "./components/OrderPopup";
 import Analytics from "./dashboard/Analytics";
@@ -14,14 +13,14 @@ import {
   default as UploadBook,
 } from "./dashboard/books/NewBookPage";
 import Books from "./dashboard/books/list";
-import Order from "./dashboard/orders/list";
 import OrderDetailPage from "./dashboard/orders/OrderDetailPage";
-import Transactions from "./dashboard/transactions/list";
+import Order from "./dashboard/orders/list";
 import TransactionListPage from "./dashboard/transactions/TransactionListPage";
-import AdminsList from "./dashboard/users/adminsList";
+import Transactions from "./dashboard/transactions/list";
 import AddAdminsPage from "./dashboard/users/AddAdminsPage";
-import UsersList from "./dashboard/users/usersList";
 import UserDetailsPage from "./dashboard/users/UserDetailPage";
+import AdminsList from "./dashboard/users/adminsList";
+import UsersList from "./dashboard/users/usersList";
 import NotFound from "./not-found";
 import TopBooks from "./pages/Books";
 import Hero from "./pages/Hero";
@@ -29,6 +28,7 @@ import Services from "./pages/Services";
 import Testimonial from "./pages/Testimonial";
 import LoginPage from "./pages/auth/Login";
 import SignUp from "./pages/auth/Signup";
+import Footer from "./pages/Footer";
 
 function App() {
   // const { user, token } = useSelector((state) => state.user);
@@ -82,23 +82,15 @@ function App() {
             element={
               <>
                 {" "}
-                <Navbar handleOrderPopup />
-                <Hero /> <Services handleOrderPopup /> <TopBooks />{" "}
-                <Testimonial />{" "}
-                <OrderPopup
+                <Navbar />
+                <Hero /> <Services /> <TopBooks /> <Testimonial /> <Footer />{" "}
+                {/* <OrderPopup
                 // orderPopup={orderPopup}
                 // setOrderPopup={setOrderPopup}
-                />
+                /> */}
               </>
             }
           />
-          {/* <Route path="/admin/dashboard" element={<DashboardLayout />}>
-            <Route path="" element={<Dashboard />} />
-            <Route path="upload" element={<UploadBook />} />
-            <Route path="manage" element={<ManageBook />} />
-            <Route path="users" element={<UsersList />} />
-            <Route path="order" element={<Order />} />
-          </Route> */}
 
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route path="" element={<Analytics />} />
