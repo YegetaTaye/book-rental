@@ -6,6 +6,7 @@ import DarkMode from "./DarkMode";
 import { FaCaretDown } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, User, Menu } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const menu = [
   // {
@@ -42,10 +43,13 @@ const Navbar = ({ handleOrderPopup }) => {
         <div className="container py-3 sm:py-0">
           <div className="flex justify-between items-center">
             <div>
-              <a href="#" className="font-bold text-xl sm:text-3xl flex gap-2 ">
+              <Link
+                to={"/"}
+                className="font-bold text-xl sm:text-3xl flex gap-2 "
+              >
                 <img src={Logo} alt="Logo" className="w-10" />
                 Arsema
-              </a>
+              </Link>
             </div>
             <div className="flex justify-between items-center gap-4">
               {/* <div>
@@ -90,12 +94,14 @@ const Navbar = ({ handleOrderPopup }) => {
                 </li>
               </ul>
               <div className="flex items-center gap-4">
-                <Button variant="ghost" size="icon" className="relative">
-                  <ShoppingCart className="h-5 w-5" />
-                  <span className="absolute -top-1 -right-1 bg-purple-600 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">
-                    0
-                  </span>
-                </Button>
+                <Link to="/order">
+                  <Button variant="ghost" size="icon" className="relative">
+                    <ShoppingCart className="h-5 w-5" />
+                    <span className="absolute -top-1 -right-1 bg-purple-600 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">
+                      0
+                    </span>
+                  </Button>
+                </Link>
                 <Button
                   variant="outline"
                   className="hidden md:flex items-center gap-2"

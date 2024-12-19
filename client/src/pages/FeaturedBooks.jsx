@@ -63,18 +63,20 @@ const TopBooks = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 place-items-center gap-5">
               {/* Card */}
               {booksData.map(({ id, img, title, rating, author }) => (
-                <div key={id} className="div space-y-3">
-                  <img
-                    src={img}
-                    alt=""
-                    className="h-[220px] w-[150px] object-cover rounded-md "
-                  />
-                  <div>
-                    <h3 className="font-semibold">{title}</h3>
-                    <p className="text-sm text-gray-700">{author}</p>
-                    <div className="flex items-center gap-1"></div>
+                <Link to={`books/${id}`} key={id}>
+                  <div key={id} className="div space-y-3">
+                    <img
+                      src={img}
+                      alt=""
+                      className="h-[220px] w-[150px] object-cover rounded-md "
+                    />
+                    <div>
+                      <h3 className="font-semibold">{title}</h3>
+                      <p className="text-sm text-gray-700">{author}</p>
+                      <div className="flex items-center gap-1"></div>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
             <div className="flex justify-center items-center mt-10">

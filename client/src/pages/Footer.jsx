@@ -9,7 +9,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#0a0f1f] text-white py-16 md:px-32 relative">
+    <footer className="bg-[#0a0f1f] text-white pt-16 pb-6 md:px-32 relative">
       <div className="container mx-auto px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Logo and Address Section */}

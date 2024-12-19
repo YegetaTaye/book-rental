@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import Book1 from "../assets/books/book1.jpg";
 import Book2 from "../assets/books/book2.jpg";
+import { Link } from "react-router-dom";
 
 // Sample data
 const categories = [
@@ -135,72 +136,7 @@ export default function BooksList() {
   const [isGridView, setIsGridView] = useState(true);
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      {/* <header className="border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
-                  <Menu className="h-5 w-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left">
-                <SheetHeader>
-                  <SheetTitle>Categories</SheetTitle>
-                </SheetHeader>
-                <div className="mt-4 space-y-2">
-                  {categories.map((category) => (
-                    <div key={category.id} className="flex items-center gap-2">
-                      <input
-                        type="radio"
-                        name="category"
-                        id={`mobile-cat-${category.id}`}
-                      />
-                      <label
-                        htmlFor={`mobile-cat-${category.id}`}
-                        className="flex-1 text-sm"
-                      >
-                        {category.name}
-                      </label>
-                      <span className="text-xs text-muted-foreground">
-                        ({category.count})
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </SheetContent>
-            </Sheet>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-purple-600 rounded-lg"></div>
-              <span className="text-xl font-semibold">Clevr</span>
-            </div>
-            <div className="flex-1 max-w-xl mx-4 hidden md:block">
-              <div className="relative">
-                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input placeholder="Find books here..." className="pl-8" />
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" className="relative">
-                <ShoppingCart className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 bg-purple-600 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">
-                  0
-                </span>
-              </Button>
-              <Button
-                variant="outline"
-                className="hidden md:flex items-center gap-2"
-              >
-                <User className="h-4 w-4" />
-                Roberto Karlos
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header> */}
-
+    <div className="min-h-screen bg-background pb-14">
       {/* Main Content */}
       <main className="container mx-auto md:pl-16 md:pr-8 md:py-8">
         <div className="flex gap-8">
@@ -301,63 +237,65 @@ export default function BooksList() {
               }`}
             >
               {books.map((book) => (
-                <Card
-                  key={book.id}
-                  className={`relative ${isGridView ? "" : "flex"}`}
-                >
-                  <div
-                    className={`${
-                      isGridView
-                        ? "aspect-[4/4]"
-                        : "w-[200px] h-[250px] object-cover pr-8"
-                    } relative overflow-hidden rounded-t-lg`}
+                <Link to={`/books/${book.id}`}>
+                  <Card
+                    key={book.id}
+                    className={`relative ${isGridView ? "" : "flex"}`}
                   >
-                    <img
-                      src={book.image}
-                      alt={book.title}
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                  <CardContent
-                    className={`relative  p-4 ${
-                      isGridView
-                        ? "min-h-[180px]"
-                        : "flex-1 min-h-[250px] pr-24"
-                    }`}
-                  >
-                    <div className="flex gap-2 mb-2 flex-wrap">
-                      {book.tags.map((tag, index) => (
-                        <Badge
-                          key={index}
-                          className={
-                            tagColors[tag] || "bg-gray-100 text-gray-800"
-                          }
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
+                    <div
+                      className={`${
+                        isGridView
+                          ? "aspect-[4/4]"
+                          : "w-[200px] h-[250px] object-cover pr-8"
+                      } relative overflow-hidden rounded-t-lg`}
+                    >
+                      <img
+                        src={book.image}
+                        alt={book.title}
+                        className="object-cover w-full h-full"
+                      />
                     </div>
-                    <h3 className="font-semibold mb-1">
-                      {" "}
-                      {book.title.length > 45
-                        ? `${book.title.slice(0, 42)}...`
-                        : book.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      {book.author}
-                    </p>
-                    {!isGridView && (
-                      <p className="text-muted-foreground">
-                        {book.description.length > 250
-                          ? `${book.description.slice(0, 250)}...`
-                          : book.description}
+                    <CardContent
+                      className={`relative  p-4 ${
+                        isGridView
+                          ? "min-h-[180px]"
+                          : "flex-1 min-h-[250px] pr-24"
+                      }`}
+                    >
+                      <div className="flex gap-2 mb-2 flex-wrap">
+                        {book.tags.map((tag, index) => (
+                          <Badge
+                            key={index}
+                            className={`${
+                              tagColors[tag] || "bg-gray-100 text-gray-800"
+                            } pointer-events-none`}
+                          >
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                      <h3 className="font-semibold mb-1">
+                        {" "}
+                        {book.title.length > 45
+                          ? `${book.title.slice(0, 42)}...`
+                          : book.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {book.author}
                       </p>
-                    )}
-                    <Button className="bg-purple-600 hover:bg-purple-700 absolute bottom-4 left-4">
-                      ORDER
-                    </Button>
-                  </CardContent>
-                </Card>
+                      {!isGridView && (
+                        <p className="text-muted-foreground">
+                          {book.description.length > 250
+                            ? `${book.description.slice(0, 250)}...`
+                            : book.description}
+                        </p>
+                      )}
+                      <Button className="bg-purple-600 hover:bg-purple-700 absolute bottom-4 left-4">
+                        ORDER
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </div>
           </div>
