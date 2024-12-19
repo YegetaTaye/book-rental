@@ -1,7 +1,12 @@
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import {
+  Route,
+  BrowserRouter as Router,
+  Routes,
+  Outlet,
+} from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import OrderPopup from "./components/OrderPopup";
 import Analytics from "./dashboard/Analytics";
@@ -30,6 +35,8 @@ import LoginPage from "./pages/auth/Login";
 import SignUp from "./pages/auth/Signup";
 import Footer from "./pages/Footer";
 import BooksList from "./pages/BooksList";
+import BookDetailsPage from "./pages/BookDetialPage";
+import OrderPage from "./pages/OrderPage";
 
 function App() {
   // const { user, token } = useSelector((state) => state.user);
@@ -66,64 +73,126 @@ function App() {
   //   checkLoggedIn();
   // }, []);
 
-  return (
+  // return (
+  //     <>
+  //       <Router>
+  //         <Routes>
+  //           <Route path="/test" element={<TestPage />} />
+  //           <Route path="/login" element={<LoginPage />} />
+  //           <Route path="/signup" element={<SignUp />} />
+  //         </Routes>
+  //         {/* <Header /> */}
+  //         <Routes>
+  //           <Route
+  //             path="/"
+  //             element={
+  //               <>
+  //                 {" "}
+  //                 <Navbar />
+  //                 <Hero /> <Services /> <TopBooks /> <Testimonial /> <Footer />{" "}
+  //               </>
+  //             }
+  //           />
+  //           <Route
+  //             path="/books"
+  //             element={
+  //               <>
+  //                 {" "}
+  //                 <Navbar />
+  //                 <BooksList />
+  //               </>
+  //             }
+  //           />
+  //           <Route
+  //             path="/books/:id"
+  //             element={
+  //               <>
+  //                 {" "}
+  //                 <Navbar />
+  //                 <BookDetailsPage />
+  //               </>
+  //             }
+  //           />
+
+  //           <Route path="/dashboard" element={<DashboardLayout />}>
+  //             <Route path="" element={<Analytics />} />
+  //             <Route path="orders" element={<Order />} />
+  //             <Route path="orders/:id" element={<OrderDetailPage />} />
+  //             <Route path="transactions" element={<Transactions />} />
+  //             <Route path="transactions/:id" element={<TransactionListPage />} />
+  //             <Route path="upload" element={<UploadBook />} />
+  //             <Route path="books" element={<Books />} />
+  //             <Route path="books/:id" element={<BookEditPage />} />
+  //             <Route path="books/new" element={<NewBookPage />} />
+  //             <Route path="users" element={<UsersList />} />
+  //             <Route path="users/:id" element={<UserDetailsPage />} />
+  //             <Route path="admins" element={<AdminsList />} />
+  //             <Route path="admins/new" element={<AddAdminsPage />} />
+  //             <Route path="admins/:id" element={<BookEditPage />} />
+  //           </Route>
+
+  //           <Route>
+  //             <Route path="/*" element={<NotFound />} />
+  //           </Route>
+  //         </Routes>
+  //       </Router>
+  //     </>
+  //   );
+  // }
+
+  const MainLayout = () => (
     <>
-      <Router>
-        <Routes>
-          <Route path="/test" element={<TestPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUp />} />
-        </Routes>
-        {/* <Header /> */}
-        <Routes>
+      <Navbar />
+      <Outlet /> {/* Render nested routes here */}
+      <Footer />
+    </>
+  );
+
+  return (
+    <Router>
+      <Routes>
+        {/* Public routes without Navbar/Footer */}
+        <Route path="/test" element={<TestPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUp />} />
+
+        {/* Routes with Navbar and Footer */}
+        <Route element={<MainLayout />}>
           <Route
             path="/"
             element={
               <>
-                {" "}
-                <Navbar />
-                <Hero /> <Services /> <TopBooks /> <Testimonial /> <Footer />{" "}
-                {/* <OrderPopup
-                // orderPopup={orderPopup}
-                // setOrderPopup={setOrderPopup}
-                /> */}
+                <Hero /> <Services /> <TopBooks /> <Testimonial />
               </>
             }
           />
-          <Route
-            path="/books"
-            element={
-              <>
-                {" "}
-                <Navbar />
-                <BooksList />
-              </>
-            }
-          />
+          <Route path="/books" element={<BooksList />} />
+          <Route path="/books/:id" element={<BookDetailsPage />} />
+          <Route path="/order" element={<OrderPage />} />
+        </Route>
 
-          <Route path="/dashboard" element={<DashboardLayout />}>
-            <Route path="" element={<Analytics />} />
-            <Route path="orders" element={<Order />} />
-            <Route path="orders/:id" element={<OrderDetailPage />} />
-            <Route path="transactions" element={<Transactions />} />
-            <Route path="transactions/:id" element={<TransactionListPage />} />
-            <Route path="upload" element={<UploadBook />} />
-            <Route path="books" element={<Books />} />
-            <Route path="books/:id" element={<BookEditPage />} />
-            <Route path="books/new" element={<NewBookPage />} />
-            <Route path="users" element={<UsersList />} />
-            <Route path="users/:id" element={<UserDetailsPage />} />
-            <Route path="admins" element={<AdminsList />} />
-            <Route path="admins/new" element={<AddAdminsPage />} />
-            <Route path="admins/:id" element={<BookEditPage />} />
-          </Route>
+        {/* Dashboard routes */}
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route path="" element={<Analytics />} />
+          <Route path="orders" element={<Order />} />
+          <Route path="orders/:id" element={<OrderDetailPage />} />
+          <Route path="transactions" element={<Transactions />} />
+          <Route path="transactions/:id" element={<TransactionListPage />} />
+          <Route path="upload" element={<UploadBook />} />
+          <Route path="books" element={<Books />} />
+          <Route path="books/:id" element={<BookEditPage />} />
+          <Route path="books/new" element={<NewBookPage />} />
+          <Route path="users" element={<UsersList />} />
+          <Route path="users/:id" element={<UserDetailsPage />} />
+          <Route path="admins" element={<AdminsList />} />
+          <Route path="admins/new" element={<AddAdminsPage />} />
+          <Route path="admins/:id" element={<BookEditPage />} />
+        </Route>
 
-          <Route>
-            <Route path="/*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </Router>
-    </>
+        {/* Catch-all route for 404 */}
+        <Route path="/*" element={<NotFound />} />
+      </Routes>
+    </Router>
   );
 }
 

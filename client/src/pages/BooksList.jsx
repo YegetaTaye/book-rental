@@ -241,7 +241,7 @@ export default function BooksList() {
             <div className="flex items-center justify-between mb-6">
               <h1 className="text-2xl font-bold">Books</h1>
               <div className="flex items-center gap-4">
-                <div className="hidden md:flex gap-2">
+                <div className="hidden lg:flex gap-2">
                   <Button
                     variant={isGridView ? "default" : "outline"}
                     size="icon"
@@ -322,7 +322,7 @@ export default function BooksList() {
                     className={`relative  p-4 ${
                       isGridView
                         ? "min-h-[180px]"
-                        : "flex-1 min-h-[250px] pr-16"
+                        : "flex-1 min-h-[250px] pr-24"
                     }`}
                   >
                     <div className="flex gap-2 mb-2 flex-wrap">
