@@ -4,7 +4,6 @@ import useBooks from "@/hooks/books/useBooks";
 
 export default function Books() {
   const { data, error, isLoading } = useBooks();
-  console.log("Error: ", error?.message);
 
   return (
     <div className="container mx-auto py-10">

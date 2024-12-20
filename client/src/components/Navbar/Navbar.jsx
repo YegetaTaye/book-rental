@@ -7,6 +7,7 @@ import { FaCaretDown } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, User, Menu } from "lucide-react";
 import { Link } from "react-router-dom";
+import useStore from "@/store";
 
 const menu = [
   // {
@@ -36,7 +37,9 @@ const DropdownLinks = [
   },
 ];
 
-const Navbar = ({ handleOrderPopup }) => {
+const Navbar = () => {
+  const cart = useStore((s) => s.cart);
+
   return (
     <>
       <div className="shadow-md bg-white dark:bg-gray-900 dark:text-white duration-200 pl-4 md:pr-8 border-b">
@@ -98,7 +101,7 @@ const Navbar = ({ handleOrderPopup }) => {
                   <Button variant="ghost" size="icon" className="relative">
                     <ShoppingCart className="h-5 w-5" />
                     <span className="absolute -top-1 -right-1 bg-purple-600 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">
-                      0
+                      {cart.length > 0 ? cart.length : 0}
                     </span>
                   </Button>
                 </Link>

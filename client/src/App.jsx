@@ -2,13 +2,12 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
 import {
+  Outlet,
   Route,
   BrowserRouter as Router,
   Routes,
-  Outlet,
 } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
-import OrderPopup from "./components/OrderPopup";
 import Analytics from "./dashboard/Analytics";
 import DashboardLayout from "./dashboard/DashboardLayout";
 import TestPage from "./dashboard/TestPage";
@@ -27,30 +26,18 @@ import UserDetailsPage from "./dashboard/users/UserDetailPage";
 import AdminsList from "./dashboard/users/adminsList";
 import UsersList from "./dashboard/users/usersList";
 import NotFound from "./not-found";
+import BookDetailsPage from "./pages/BookDetialPage";
+import BooksList from "./pages/BooksList";
 import TopBooks from "./pages/FeaturedBooks";
+import Footer from "./pages/Footer";
 import Hero from "./pages/Hero";
+import OrderPage from "./pages/OrderPage";
 import Services from "./pages/Services";
 import Testimonial from "./pages/Testimonial";
 import LoginPage from "./pages/auth/Login";
 import SignUp from "./pages/auth/Signup";
-import Footer from "./pages/Footer";
-import BooksList from "./pages/BooksList";
-import BookDetailsPage from "./pages/BookDetialPage";
-import OrderPage from "./pages/OrderPage";
 
 function App() {
-  // const { user, token } = useSelector((state) => state.user);
-  // const dispatch = useDispatch();
-
-  // const checkLoggedIn = async () => {
-  //   let token = localStorage.getItem("token");
-  //   if (token === null) {
-  //     localStorage.setItem("token", "");
-  //     token = "";
-  //   } else {
-  //   }
-  // };
-
   //AOS
   useEffect(() => {
     AOS.init({
@@ -61,17 +48,6 @@ function App() {
     });
     AOS.refresh();
   }, []);
-
-  // //Logout
-  // const logout = () => {
-  //   dispatch(clearUser());
-  //   localStorage.setItem("token", "");
-  //   localStorage.setItem("user", "");
-  // };
-
-  // useEffect(() => {
-  //   checkLoggedIn();
-  // }, []);
 
   // return (
   //     <>

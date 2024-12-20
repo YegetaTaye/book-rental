@@ -1,11 +1,8 @@
-import React, { useState } from "react";
-import Img1 from "../assets/books/book2.jpg";
-import Img2 from "../assets/books/book1.jpg";
-import Img3 from "../assets/books/book3.jpg";
-import { FaStar } from "react-icons/fa";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { setCart, clearCart } from "../context/cart/cartSlice";
-import { useDispatch } from "react-redux";
+import Img2 from "../assets/books/book1.jpg";
+import Img1 from "../assets/books/book2.jpg";
+import Img3 from "../assets/books/book3.jpg";
 
 const ServicesData = [
   {
@@ -52,7 +49,7 @@ const ServicesData = [
   },
 ];
 
-const Services = ({ handleOrderPopup }) => {
+const Services = () => {
   const checkUser = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user"))
     : null;
@@ -65,8 +62,7 @@ const Services = ({ handleOrderPopup }) => {
   };
   console.log(cart);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  // dispatch(setCart(cart))
+
   return (
     <>
       <span id="services"></span>
@@ -107,13 +103,13 @@ const Services = ({ handleOrderPopup }) => {
                     className="bg-primary hover:scale-105 duration-300 text-white py-1 px-4 rounded-full mt-4 group-hover:bg-white group-hover:text-primary"
                     // onClick={navigate("/login")}
                     // onClick={checkUser ? ()=>{handleCart(service)} : handleOrderPopup}
-                    onClick={
-                      checkUser
-                        ? () => {
-                            handleCart(service);
-                          }
-                        : handleOrderPopup
-                    }
+                    // onClick={
+                    //   checkUser
+                    //     ? () => {
+                    //         handleCart(service);
+                    //       }
+                    //     : handleOrderPopup
+                    // }
                   >
                     Order Now
                   </button>

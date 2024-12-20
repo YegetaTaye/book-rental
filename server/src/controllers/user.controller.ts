@@ -104,7 +104,7 @@ export const getUsers = catchAsync(
     const { id } = req.params;
     let { email, isAdmin } = req.query;
     email = Array.isArray(email) ? email[0] : email;
-    console.log(req.query);
+    // console.log(req.query);
 
     let user;
 
@@ -267,3 +267,40 @@ export const deleteUser = catchAsync(
       .json({ message: "User successfully deleted" });
   }
 );
+
+//get all book orders by user id
+export const getUserOrders = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  CheckValidParam(id, res);
+
+  const orders = await prisma.order.findMany({
+    where: {
+      userId: parseInt(id),
+    },
+    select: {
+      id: true,
+      status: true,
+      orderDate: true,
+      book: {
+        select: {
+          title: true,
+          author: true,
+          bookCode: true,
+          publicationYear: true,
+        },
+      },
+      user: {
+        select: {
+          fullName: true,
+        },
+      },
+    },
+  });
+
+  if (!orders)
+    return res
+      .status(httpStatus.BAD_REQUEST)
+      .json({ message: "Orders do not exist" });
+
+  return res.status(httpStatus.OK).json(orders);
+});

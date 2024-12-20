@@ -4,8 +4,7 @@ import Book1 from "../assets/books/book2.jpg";
 import Book2 from "../assets/books/book1.jpg";
 import Book3 from "../assets/books/book3.jpg";
 import Vector from "../assets/images/blue-pattern.png";
-import { Button } from "@/components/ui/button"
-
+import { Button } from "@/components/ui/button";
 
 const ImageList = [
   {
@@ -31,7 +30,7 @@ const ImageList = [
   },
 ];
 
-const Hero = ({ handleOrderPopup }) => {
+const Hero = () => {
   const [imageId, setImageId] = useState(Book1);
   const [title, setTitle] = useState("His Life will forever be Changed");
   const [description, setDescription] = useState(
@@ -48,7 +47,7 @@ const Hero = ({ handleOrderPopup }) => {
   };
 
   return (
-    <div >
+    <div>
       <div
         className="px-20 h-screen min-h-[550px] sm:min-h-[650px] bg-gray-100 flex justify-center items-center dark:bg-gray-950 dark:text-white duration-200"
         style={bgImage}
@@ -67,7 +66,6 @@ const Hero = ({ handleOrderPopup }) => {
                 className="text-5xl sm:text-6xl lg:text-7xl font-bold"
               >
                 {title}
-                
               </h1>
               <p
                 data-aos="slide-up"
@@ -77,12 +75,10 @@ const Hero = ({ handleOrderPopup }) => {
               >
                 {description}
               </p>
-              <p class="bg-clip-text bg-gradient-to-b text-sm ">
-                  by Anonymous
-                </p>{" "}
+              <p class="bg-clip-text bg-gradient-to-b text-sm ">by Anonymous</p>{" "}
               <div className="py-4">
                 <Button
-                  onClick={handleOrderPopup}
+                  // onClick={handleOrderPopup}
                   variant="outlined"
                   className="text-white"
                   // className="bg-gradient-to-r from-primary to-secondary hover:scale-105 duration-200 text-white py-2 px-4 rounded-full"
@@ -105,6 +101,7 @@ const Hero = ({ handleOrderPopup }) => {
               <div className="flex lg:flex-col lg:top-1/2 lg:-translate-y-1/2 lg:py-2 justify-center gap-4 absolute -bottom-[40px] lg:-right-1 bg-white rounded-full">
                 {ImageList.map((item) => (
                   <img
+                    key={item.id}
                     data-aos="zoom-in"
                     data-aos-once="true"
                     src={item.img}

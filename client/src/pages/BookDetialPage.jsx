@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Heart, Star, StarHalf, ChevronRight, Minus, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
+import useStore from "@/store";
 
 // Sample book data
 const book = {
@@ -52,10 +53,12 @@ const relatedBooks = [
 ];
 
 export default function BookDetailPage() {
+  const addToCart = useStore((s) => s.addToCart);
+
   return (
     <>
       {/* Breadcrumb */}
-      <div className="container mx-auto px-4 py-4 bg-purple-400 text-white bg-transparent">
+      <div className="container mx-auto px-4 py-4 bg-purple-400 text-white opacity-85">
         <div className="flex items-center text-sm  md:px-24">
           <Link to="/" className="hover:text-primary">
             Home
@@ -88,7 +91,12 @@ export default function BookDetailPage() {
               {/* Price and Actions */}
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
-                  <Button className="bg-purple-600 hover:bg-purple-700 px-8">
+                  <Button
+                    onClick={() => {
+                      addToCart(book.id);
+                    }}
+                    className="bg-purple-600 hover:bg-purple-700 px-8"
+                  >
                     Order
                   </Button>
                 </div>

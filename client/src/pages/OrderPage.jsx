@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Book1 from "../assets/books/book1.jpg";
+import useBooks from "@/hooks/books/useBooks";
 
 // Sample order data
 const orders = [
@@ -32,6 +33,18 @@ const statusStyles = {
 };
 
 export default function OrderPage() {
+  const { data, error, isLoading } = useBooks();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  console.log("Books data", data);
+
   return (
     <div className="container w-full min-h-screen py-8 md:py-16 md:px-40">
       {/* Desktop view */}
