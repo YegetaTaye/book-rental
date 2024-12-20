@@ -20,6 +20,12 @@ class APIClient {
     return axiosInstance.get(`${this.endpoint}/${id}`).then((res) => res.data);
   };
 
+  getUserOrders = (id) => {
+    return axiosInstance
+      .get(`${this.endpoint}/${id}/orders`)
+      .then((res) => res.data);
+  };
+
   post = (data) => {
     // delay(3000);
     return axiosInstance.post(this.endpoint, data).then((res) => res.data);

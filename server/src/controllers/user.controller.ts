@@ -271,6 +271,7 @@ export const deleteUser = catchAsync(
 //get all book orders by user id
 export const getUserOrders = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
+  console.log("id", id);
   CheckValidParam(id, res);
 
   const orders = await prisma.order.findMany({

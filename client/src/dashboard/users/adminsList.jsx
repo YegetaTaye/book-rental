@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import UserDataTable from "@/dashboard/components/DataTable";
 import { users, columns } from "@/dashboard/users/UsersTableConfig";
-import useUsers from "@/hooks/useUsers";
+import useUsers from "@/hooks/users/useUsers";
 
 export default function AdminsList() {
   const {
